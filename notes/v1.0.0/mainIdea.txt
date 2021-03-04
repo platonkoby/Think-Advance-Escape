@@ -1,0 +1,67 @@
+non visual, skill/research based game
+
+Concepts
+
+    1. the level generation is random, the user will get an idea on the climate of the location,
+        its landscape, soil and others. Based on this the user will choose the items.
+
+    2. the user will make certain deisions, which will affect the whole run. They may choose to
+        keep on the Rock Lee's weights for certain period of time, which will give the debuffs,
+        however once they are off, they will give a higher initial boost and a bit smaller stat
+        bonus which depends on the amount of time they are worn 
+    
+    3. How to win? escape the location. Items have durability, therfore depending on the items 
+        and climate, staying for too long is not good. Escaping too quick is almost impossible.
+
+    4. Depending on the play style, user may be able to choose the items which will alow them
+        to leave at the pase they want
+
+    5. The game level is going to have 8 locations (11/12 including initial and fixed). Large
+        locations (2), are going to the zones where player builts shelter, gets of the their
+        supplies. Medium locations (4) are going to be locations with the most actions which 
+        influence the escape. Last but not least Small locations (2) are going to have only 
+        one action, which can give player an item, which contributes to all the win conditions.
+        Basing the choice on the knowledge of the locactions and items, player is going to choose
+        which win condition to follow.
+
+    6. Fixed locations are locations tied to the map, meaning that they are always going to be 
+        present on that map. For example desserted island has cliff, beach and a volcano. Fixed
+        locations, usually have embedded win conditions.
+
+    7, Initial locations are the locations which are also fixed to the map, however they do not
+        always have win conditions, they are used as a player inital spawn point
+
+    Items:
+
+        1. there is a chance to find items on the level
+        2. user can choose 'n' items before the level starts
+        
+
+    Strategy:
+        
+        1. there is no need to find a perfect balance between handling threats, rather stick to a
+            strategy depending on the level. For example instead of being safe from every threat,
+            choose to be safer from starvation and shelter, and perform less risky actions where
+            the risk of getting sick is higher
+
+        2. User usually has to risk for static threats, sometimes for middle threats
+
+        3. dynamic treats USUALLY come from higher reward actions
+
+
+    Gameplay:
+
+        1. Threats:
+            
+            Static:
+                - starvation
+                - dehydration
+
+            Middle
+                - hypothermia (cold and hot)
+
+
+            Dynamic:
+                - illness
+                - injuries
+                

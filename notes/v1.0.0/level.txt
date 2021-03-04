@@ -1,0 +1,58 @@
+
+
+
+Climates:
+    - Tundra
+    - Rainforest
+    - Savanna
+
+landscape:
+    - Forest
+    - Desserted Island
+    - Dessert
+
+
+Threat Animals:
+    1. Forest:
+        -Bears
+        -Wolfes
+
+    2. Desserted Island:
+        - Poisonous snakes
+        - Sharks
+
+    3. Dessert:
+        - Lion
+        - Elephant
+
+
+Food sources:
+    1. Forest:
+        - wild berries
+        - rabbits
+
+    2. Desserted Island:
+        - Fruits
+        - roots
+
+    3. Dessert:
+        - Meerkats
+        - Zebras (need str and agility)
+        - insects
+
+
+Food and Water:
+
+    2. Desserted Island
+        -coconuts, however you have a limitted number of them in the starts
+            and it is hard to get new
+
+
+Threats:
+
+    Forest:
+        - hypothermia
+        - injury
+
+    Desserted Island:
+        -

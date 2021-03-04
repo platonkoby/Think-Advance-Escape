@@ -1,0 +1,12 @@
+1. goForward (last change v1.0.0)
+    -moves player to the next location
+    
+2. goBackwar (last change v1.0.0)
+    -moves player to the location previous location (previous as in one before that and not the one from which player came from)
+
+3. buildShelter
+    -an action specific for the large locations, which lets player build a shelter
+    -builds a shelter
+        1. if a player has placed a tent, shelter works as an enhancement to the tent
+        2. depending on the location, shelter will have different stats
+        3. shelter will be made from n common building materials

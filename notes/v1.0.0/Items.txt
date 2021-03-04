@@ -1,0 +1,135 @@
+Items:
+
+    Tags:
+        - medicine (2)
+        - saving card (3)
+        - utility (5)
+        - sheltering (3)
+
+    1. Rock Lee's weights
+
+        Tags:
+            - Saving card
+
+        Effects
+            1. Saving
+            2. Buff
+            3. Passive
+
+        Instant: 
+            - strength +25
+            - agility +50
+            
+        Buff:
+            For each day worn, +1 strength, +2 agility
+
+        Passive: 
+
+            - While the wights are on, the buff is disabled
+            - You are slowed by 30%
+            - your starvation rate increases by 10%
+
+        Durability: 1
+
+
+    2. Reusable funnel filter
+        
+        Tags:
+            - utility
+
+        Effects
+            1. active
+            2. rechargable
+
+        Active: clean water
+            cleans water
+
+        Durability:
+            2
+
+        Rechargable:
+            1. can be fixed with stones and sand
+        
+    3. knife
+
+        Tags:
+            - utility
+            - sheltering
+
+    4. tent
+
+        Tags:
+            - sheltering
+            - 
+
+    5. matches and cloth
+
+        Tags:
+            - utility
+            - saving card
+
+        Durability:
+            25
+
+        Effects:
+            1. Active
+            2. Saving
+            
+        Active 1:
+            - create a campfire
+        
+        Active 2:
+            - saving fireball 
+
+        // good if low int
+
+    6. Insulating tape
+
+        Tags:
+            -utility
+            -sheltering
+            -medicine
+
+        Effects:
+            1. Active
+            2. Active
+            3. Buff
+
+        Active 1:
+            - used to create a medium sized shelter
+
+        Active 2:
+            - used to fix some of the items
+
+        Buff:
+            - used to help with leg, back, arm injuries
+
+    
+    7. Whiskey Bottle
+
+        Tags:
+            - saving card
+            - medicine
+            - utility
+            - anti poison
+
+        Effects:
+            - Active
+            - Active
+            - Active
+            - Saving
+
+        Active 1:
+            -help to create fire
+        
+        Active 2:
+            -help reduce pain or remove poison
+
+        Active 3:
+            -Drink to save from dehydration 
+
+        Saving:
+            - Drunken master (brakes the bottle)
+                
+
+    8. 

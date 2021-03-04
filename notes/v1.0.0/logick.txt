@@ -1,0 +1,26 @@
+types and interfaces:
+
+    1. Props are interfaces made specifically to annotate props
+    2. Tag is a type representing types of tags
+    3. LocationType is a type representing types of locations
+    4. Locs is a type representing a mixed array of differnt types of locations
+   ?5. OneLoc is a type representing types of locations
+
+Classes:
+
+    1. Level, a class representing a Level
+    2. Stage, a class representing currentStage of the game
+    3. Action, a class made to create actions
+    4. ActionFuncs, a class which creates functionality for actions
+
+
+Level functions:
+
+    1. randomiseLocations, a function which returns an array of random unfixed locations 
+    2. getInitialLocation, a function which takes a map name as a parameter and returns an
+        inital location for that map (currently uses 'desserted island')
+
+Stage Functions:
+
+    1. move, responsible for making changes and recreating Stage
+

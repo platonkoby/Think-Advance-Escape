@@ -1,0 +1,43 @@
+Stats:
+    1. strength 
+        - brute force
+        - illness/poison resistance
+        - injury resistance
+
+    2. agility
+        - running speed
+        - evasion
+        - climbing
+        - injury chance decrease
+
+    3. intelegence
+        - gives the ability to use some Items
+        - fire creation
+        - higher item efficiency
+
+Survival Stats:
+
+    - hunger
+    - dehydration
+    - hypothermia
+    - illness
+    - injuries 
+        -back
+            1. Light - slow (20%)
+            2. Meium - 
+            3. Severe - lethal
+        -arm
+            1. Light - 
+            2. Meium
+            3. Severe 
+        -head
+            1. Light
+            2. Meium
+            3. Severe - lethal
+        -leg
+            1. Light
+            2. Meium
+            3. Severe - immobility if no support
+
+Main concept stat
+    -efficiency??

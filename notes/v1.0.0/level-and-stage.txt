@@ -1,0 +1,8 @@
+Level and Stage may seem similar, i like to look at them as brothers, because they have the roles of controling the entire runtime
+
+Level is static, meaning that it doesn't change (at least for now), and if will be changed will be changed rarely. Level defines
+the parameters of the whole game
+
+Stage is dynamic, it changes with every player action, or event. It uses Level as a reference and usees the values of the as readonly.
+Stage instance is created initially with useEffect , which depends on level and loading. After that stage is recreated with slight changes
+after every action

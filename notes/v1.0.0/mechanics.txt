@@ -1,0 +1,36 @@
+There is a board/grid, representing an area, the user doesn't see the board, however each decision is a movement
+on the board, which triggers different code, allows reusability and makes code more modular
+
+every location has its key and a reference to other locations, the player can't go back, therefore if player went to
+a new location, they do not have access to the previous location, usually 
+
+the player is an object and the actions reference the geographical factors along with player items and stats to create
+risks and calculate injuries
+
+eg.
+
+    player {
+        str: 20,
+        agil: 30,
+        items: '...',
+        injuries: '...
+    }
+    .geography {
+        climate: 'humid',
+        landscape: 'rocky',
+        weather: 'morning'
+    }
+
+    climateStats {
+        humid {
+            enhancers: [[rocky, 1.50], [morning, 1.30]]
+        }
+        
+    }
+
+    riskCalc () {
+        risk = if enhcars risk * enhancers - (players stats * debuffs)
+
+        if risk > required, injury
+    }
+

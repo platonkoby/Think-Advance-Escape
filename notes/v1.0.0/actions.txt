@@ -1,0 +1,24 @@
+Action parameters:
+-title: the name of the action (no current use)
+-description: the description of the action (no current use)
+-forTags: the location tags for which this action is applicable (used to assign actions to locations)
+-forTypes: the location types for which this action is applicable (used to assign actions to loactions)
+-func: an object containin action func and title func (the functions used to run the actions, and change the output text)
+-type: type of the function, whether it is whithin one location or between different locations (rn there are 2 static and dynamic)
+    i) static is for actions which are performed whithin the location and do not depend on outside factors
+    ii) dynamic is for actions which are performed between locations, for example moving from one location to another
+-repeats: the total number of times an action can be used (used to disable actions after certain usage amount)
+
+1. goForward
+    -moves player to the next location
+
+2. goBackward
+    -moves player to the location previous location (previous as in one before that and not the one from which player came from)
+
+3. buildShelter
+    -an action specific for the large locations, which lets player build a shelter
+    -builds a shelter (for now doesn't do anything)
+
+4. buildRaft
+    -an action specific to win condition locations, which are located on the coast. Lets player build an escape raft
+    -builds an escape raft (for now doesn't do anything)
