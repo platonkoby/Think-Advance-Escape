@@ -1,46 +1,38 @@
-import Player from './player';
-import actions, { Action } from './action';
-import {
-	initialLocations,
-	winConditionLocations,
-	nonFixedLocations,
-	LocInit,
-	LocWC,
-	GameMap,
-	OneLoc,
-	AllLoc
-} from './location';
+import { initialLocations, winConditionLocations, nonFixedLocations, AllLocations } from './location';
+import { LocInit, LocWC, GameMap, OneLoc, AllLoc, LocationTitle } from '../types/locationTypes';
+import constructionsData, { Construction } from '../data/constructions';
+
+type LevelMethods = '';
+type Props = Omit<Level, LevelMethods>;
 
 class Level {
 	map: GameMap;
-	nonFixedLocs?: OneLoc[];
-	initialLocation?: LocInit;
-	winConditionLocs?: LocWC[];
+	nonFixedLocs: OneLoc[];
+	initialLocation: LocInit;
+	winConditionLocs: LocWC[];
 	graph: Map<number, MapLocations>;
+	constructions: Construction[];
 
-	constructor(
-		map: GameMap,
-		nonFixedLocs: OneLoc[],
-		initialLocation: LocInit,
-		winConditionLocs: LocWC[],
-		graph: Map<number, MapLocations>
-	) {
+	constructor({ map, nonFixedLocs, initialLocation, winConditionLocs, graph, constructions }: Props) {
 		this.map = map;
 		this.nonFixedLocs = nonFixedLocs;
 		this.initialLocation = initialLocation;
 		this.winConditionLocs = winConditionLocs;
 		this.graph = graph;
+		this.constructions = constructions;
 	}
 	// createActions(player?: Player): void {
 	// 	this.actions = actionListGenerator(this.climate, this.locations, player);
 	// }
 
 	static generate(map: GameMap): Level {
+		const locations: AllLoc[] = selectLocations(map, AllLocations)
+		const constructions: Construction[] = getConstructions(map, locations);
 		const winConditionLocs: LocWC[] = getWinConditionLocations(map);
 		const nonFixedLocs: OneLoc[] = randomiseLocations();
 		const initialLocation: LocInit = getInitialLocation(map);
 		const graph: Map<number, MapLocations> = generateGraph(winConditionLocs, nonFixedLocs, initialLocation);
-		const level = new Level(map, nonFixedLocs, initialLocation, winConditionLocs, graph);
+		const level = new Level({ map, nonFixedLocs, initialLocation, winConditionLocs, graph, constructions });
 
 		return level;
 	}
@@ -152,6 +144,20 @@ function generateGraph(winConditions: LocWC[], nonFixed: OneLoc[], initialLoc: L
 		}
 		return random;
 	}
+}
+
+function getConstructions(map: GameMap, locations: AllLoc[]): Construction[] {
+	const locationTitles: (LocationTitle | 'all')[] = locations.map((location) => location.title);
+	locationTitles.push('all');
+	const constructions = constructionsData.filter((item) => {
+		let locations = item.forLocations.map((location) => locationTitles.includes(location));
+		return locations.includes(true) ? true : false;
+	});
+	return constructions;
+}
+
+function selectLocations(map: GameMap, locations: AllLoc[]): AllLoc[] {
+	
 }
 
 export default Level;

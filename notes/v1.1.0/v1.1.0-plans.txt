@@ -1,0 +1,81 @@
+v1.1.0 is going to be the first big update to the game
+
+Main goal:
+
+    The first version with the concept of victory, the player will need to find items and build a standart shelter, and then
+    a boat to leave.
+
+    This is quite a major update, though it may look like there is not much change form v1.0.0, all the change is fundamental
+    mechanics of the Level construction and Stage updates.
+
+
+
+Initial game is named "Think, Advance, Escape", the initial v1.0.0 is just a foundation for the entire game.
+The whole functionality of the v1.0.0 is that it allows player to choose where to go and has 5 actions.
+
+v1.1.0
+
+I plan to push it when, i will do some major changes
+
+1. Update Level and Stage, and how actions are assigned
+
+
+Regarding the change
+
+1. The first change is a concept which I came up with, when realised that a lot of actions depend on certain factors,
+    for example, the action to escape on the raft, should be available only after the raft is built. 
+    - Initial concept, sugestes that I will rework how actions are selected. On run all actions are created and put
+        into the actionList, then the list is iterated and locations pick up the actions they need, by firstly choosing
+        those which have the fitting forType and then forTags
+
+1. Issues:
+
+    - the first issue is that, when the there are not a lot of actions, it is okay to create them all at the start, however
+        as the number of actions grow, some actions are not going to be needed for every occasion, therefore generating the 
+        actions which are not going to be used is unsustainable. 
+    - the second issue is that currently all actions feeting by the tags are selected by locations and then displayed. This 
+        works well, when the actions are meant to be available from the beggining, however, if an action like "escape and win"
+        exists, it is not meant to be available until a certain condition is met.
+
+
+1. Solve: 
+    First I will explain how the new Action Selection is going to work. The Level has a lot of properies, for example wheather,
+    constructions, climate. Which may change throughout the game, however the level itself is not meant to change, so how do we
+    manage the change? This is where Stage comes in. Level has lists of the possible options for those properies for example,
+    wheather: ['rain', 'fog', 'sun'], and Stage will have the current option, for example wheather: 'rain'. Meaning that stage,
+    will refer to Level when changing the weather.
+
+    Since Level will have all the possible options for the properies, this means that it can create a list of all dependecies, like
+    tags, items, climate... Level will initialy use that list to create instances of needed actions and then separate them in two grups,
+    one with wait and other without, and store those groups.
+    
+    
+    - This solves the issue with generating all the actions and also help solve the second issue
+
+    Stage, will initialy refer to level, and get the actions. It will create an initial pull of actions, with actions form no wait group.
+    Stage will also create another set of inital groups, which will consist of the actions which depend on the initial actions, the dependency check
+    is done by checking if an action is refering to the title of any other action.
+
+    When the action runs, the checkers of actions in that action's dependency group (in map) are all called. If any checker returns true, the action
+    is called. It will work similarly with other dependecies.
+
+    - This solves the second issue
+
+    Extra: whenever the action in the pull repeats reach 0, it is not thrown away from the pull because this will cause a needless update. Rather
+            it will be thrown away on the next update caused by dependency checker, however eventhough it will not be thrown away, it will still
+            be disabled
+
+
+1. Additional: 
+
+- the thing that issues me rn, is that stage is going to have all the locations and actions, it may become very big and will cause performance issue
+    if it updates on every single action. Though this is still just a text-based game, therefore it shouldn't really have much of an impact
+
+
+2. In v1.0.0, there were actions which were not doing anything, they gave an image of boat built or shleter built, however there was no actul code
+    change. This is because there are no basic items like leaves or sticks yet and there is no idea of constructions yet.
+
+2. Solve: 
+
+    -in v1.1.0, there will be added item collection, but since there is no player yet, the items are not yet collected
+

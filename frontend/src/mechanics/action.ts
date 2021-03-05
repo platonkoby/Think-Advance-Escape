@@ -1,6 +1,6 @@
 // import actions from './actions.json';
 // import { LocationInterface, Climate } from './level';
-import { LocationType, Tag } from './location';
+import { LocationType, Tag } from '../types/locationTypes';
 import funcs, { ActionFuncs as Func } from './actionFuncs';
 import Player from './player';
 
@@ -36,7 +36,7 @@ class Action {
 }
 
 // const buildShelter = new Action('build shelter', 'Build a shelter', [], [ 'large' ]);
-const goForward = Action.generate({
+const goForward = new Action({
 	title: 'go forward',
 	description: 'move to the next location',
 	forTags: [ 'explore' ],
@@ -45,7 +45,7 @@ const goForward = Action.generate({
 	type: [ 'dynamic' ],
 	repeats: Infinity
 });
-const goBackward = Action.generate({
+const goBackward = new Action({
 	title: 'move to',
 	description: 'move to the previous location',
 	forTags: [ 'explore' ],
@@ -54,7 +54,7 @@ const goBackward = Action.generate({
 	type: [ 'dynamic' ],
 	repeats: Infinity
 });
-const buildShelter = Action.generate({
+const buildShelter = new Action({
 	title: 'build a shleter',
 	description: 'build a shelter, which slighly protects you from threats',
 	forTags: [ 'all' ],
@@ -63,7 +63,7 @@ const buildShelter = Action.generate({
 	type: [ 'static' ],
 	repeats: 1
 });
-const buildRaft = Action.generate({
+const buildRaft = new Action({
 	title: 'build an escape raft',
 	description: 'build a raft, which is used to escape from an island',
 	forTags: [ 'coastal' ],
@@ -73,7 +73,7 @@ const buildRaft = Action.generate({
 	repeats: 1
 });
 
-const winWithRaft = Action.generate({
+const winWithRaft = new Action({
 	title: 'win with a raft',
 	description: "player built a raft and now needs to escape on it, don't forget to gather resources!",
 	forTags: [ 'coastal' ],

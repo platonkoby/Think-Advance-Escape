@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import Level from './mechanics/level';
 import Player from './mechanics/player';
 import Loading from './Loading';
-import { MapLocations } from './mechanics/level';
 import { ActionFuncs as Func, ActionTitle } from './mechanics/actionFuncs';
 import Stage from './mechanics/stage';
 import { Action } from './mechanics/action';

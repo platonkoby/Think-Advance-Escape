@@ -1,59 +1,11 @@
 import { Action } from './action';
 import actionList from './action';
+import { LocInit, LocWC, LocLarge, LocSmall, LocMedium, LocationType } from '../types/locationTypes';
+import commonItems from '../data/commonItems';
+import uncommonItems from '../data/uncommonItems';
 
 const winCon: 'win condition' = 'win condition';
 const initLoc: 'initial location' = 'initial location';
-
-export type Tag =
-	| 'explore'
-	| 'rough terrain'
-	| 'enclosed'
-	| 'dark'
-	| 'high'
-	| 'high vegetation'
-	| 'humid'
-	| 'coastal'
-	| 'all';
-export type LocationType = 'large' | 'medium' | 'small' | 'win condition' | 'initial location' | 'all';
-export type OneLoc = LocWC | LocSmall | LocLarge | LocMedium;
-export type GameMap = 'desserted island';
-export type AllLoc = OneLoc | LocWC | LocInit;
-
-interface Loc {
-	title: string;
-	type: LocationType | [LocationType, LocationType];
-	description: string;
-	tags: Tag[];
-	fixed: boolean;
-	initial?: boolean;
-	text?: string;
-	actions: Action[];
-}
-
-interface LocLarge extends Loc {
-	type: 'large';
-	fixed: false;
-}
-interface LocMedium extends Loc {
-	type: 'medium';
-	fixed: false;
-}
-interface LocSmall extends Loc {
-	type: 'small';
-	fixed: false;
-}
-export interface LocWC extends Loc {
-	type: 'win condition' | ['win condition', 'initial location'];
-	fixed: true;
-	for: GameMap;
-}
-export interface LocInit extends Loc {
-	type: 'initial location' | ['win condition', 'initial location'];
-	fixed: true;
-	initial: true;
-	for: GameMap;
-	text: string;
-}
 
 let beach: LocInit & LocWC = {
 	title: 'beach',
@@ -65,7 +17,8 @@ let beach: LocInit & LocWC = {
 	initial: true,
 	for: 'desserted island',
 	text:
-		'You were woken up by morning sunlight. Feeling the sand in your mouth and uncomfortable wet clothes wrapping you exhausted body, you stand up to look around. You see somekind of rainforest in front of you. '
+		'You were woken up by morning sunlight. Feeling the sand in your mouth and uncomfortable wet clothes wrapping you exhausted body, you stand up to look around. You see somekind of rainforest in front of you. ',
+	items: { commonItems: commonItems.beachCommonItems, uncommonItems: uncommonItems.beachUncommonItems }
 };
 
 let cave: LocMedium = {
@@ -75,7 +28,8 @@ let cave: LocMedium = {
 	type: 'medium',
 	tags: [ 'explore', 'rough terrain', 'dark' ],
 	actions: [],
-	fixed: false
+	fixed: false,
+	items: { commonItems: commonItems.caveCommonItems, uncommonItems: uncommonItems.caveUncommonItems }
 };
 
 let rockyHills: LocMedium = {
@@ -85,7 +39,8 @@ let rockyHills: LocMedium = {
 	type: 'medium',
 	tags: [ 'explore', 'rough terrain', 'high' ],
 	fixed: false,
-	actions: []
+	actions: [],
+	items: { commonItems: commonItems.rockyHillsCommonItems, uncommonItems: uncommonItems.rockyHillsUncommonItems }
 };
 
 let jungle: LocLarge = {
@@ -96,7 +51,8 @@ let jungle: LocLarge = {
 	tags: [ 'explore', 'humid', 'high vegetation' ],
 	actions: [],
 	initial: false,
-	fixed: false
+	fixed: false,
+	items: { commonItems: commonItems.jungleCommonItems, uncommonItems: uncommonItems.jungleUncommonItems }
 };
 
 let whiteSands: LocSmall = {
@@ -105,7 +61,8 @@ let whiteSands: LocSmall = {
 	type: 'small',
 	tags: [ 'explore', 'coastal' ],
 	actions: [],
-	fixed: false
+	fixed: false,
+	items: { commonItems: commonItems.whiteSandsCommonItems, uncommonItems: uncommonItems.whiteSandsUncommonItems }
 };
 
 const locations = [ cave, rockyHills, jungle, whiteSands, beach ];

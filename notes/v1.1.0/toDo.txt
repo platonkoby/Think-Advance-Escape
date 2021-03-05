@@ -1,0 +1,37 @@
+Level:
+    - when level generates, it has all the options for constructions and possible common items
+    - level has all the actions needed stored into 2 groups, 1 -no wait, and 2 - wait
+    - level generates only the actions it needs other actions are not generated
+
+Stage:
+    - stage has all the locations, so that they can get the actions and show the items
+    - stage constructions prop
+    - stage creates a pull of initial actions
+    - stage creates a map group for each of the current actions, item and others if they have dependecy actions
+        i. some actions are depend on constructions such as raft, therefore they will need to depend on the actions
+            which create the constructions and not constructions themselves
+    - other actions, are stored separately
+    - add checkers and depencies group to wait actions
+
+Actions:
+    - actions like collect need to be added
+
+
+
+
++ 1. Add the constructions to the level
+2. common items come from the locations, therefore create lists of common items in locations.
+3. in level, create a list of all the tags and other dependecies, from locations, constructions and items
+4. create actions to collect stick and leafes and vines
+5. create a function which generates only the needed actions
+6. create the function to separate the actions
+
+7. Let stage have all the locations
+8. create a constructions prop for stage
+9. create a function which makes locations get the initial actions
+10. create a function which separates the wait actions which depend on the current actions from those who don't
+11. create a function which creates a group in the map for every current action which has dependecies
+12. make checker run when the actions they depend on are fired
+13. update the current pull, to remove everything that is not needed (actions with 0 repeats or those who need to be substituted)
+14. update the dependecy groups
+15. Rework action, so that funcs where the methods?

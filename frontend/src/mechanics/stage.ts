@@ -1,5 +1,5 @@
 import { MapLocations } from './level';
-import { OneLoc } from './location';
+import { OneLoc } from '../types/locationTypes';
 
 interface StageProps {
 	currentLocation: MapLocations;
