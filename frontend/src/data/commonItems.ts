@@ -10,10 +10,11 @@ export class CommonItem {
 const flexibleBranch = new CommonItem('flexible branch');
 const wideLeaf = new CommonItem('wide leaf');
 
-const jungleCommonItems: CommonItem[] = [ flexibleBranch, wideLeaf ];
-const beachCommonItems: CommonItem[] = [];
-const caveCommonItems: CommonItem[] = [];
-const rockyHillsCommonItems: CommonItem[] = [];
-const whiteSandsCommonItems: CommonItem[] = [];
+const jungle: CommonItem[] = [ flexibleBranch, wideLeaf ];
+const beach: CommonItem[] = [];
+const cave: CommonItem[] = [];
+const rockyHills: CommonItem[] = [];
+const whiteSands: CommonItem[] = [];
+const test: CommonItem[] = [];
 
-export default { jungleCommonItems, beachCommonItems, caveCommonItems, rockyHillsCommonItems, whiteSandsCommonItems };
+export default { jungle, beach, cave, rockyHills, whiteSands, test };

@@ -20,18 +20,23 @@ Actions:
 
 
 + 1. Add the constructions to the level
-2. common items come from the locations, therefore create lists of common items in locations.
-3. in level, create a list of all the tags and other dependecies, from locations, constructions and items
-4. create actions to collect stick and leafes and vines
-5. create a function which generates only the needed actions
-6. create the function to separate the actions
++ 2. common items come from the locations, therefore create lists of common items in locations.
++ 3. in level, create a list of all the tags and other dependecies, from locations
++ 4. create actions to collect stick and leafes and vines
++ 5. create a function which generates only the needed actions
++ 6. create the function to separate the actions
 
-7. Let stage have all the locations
++ 7. Let stage have all the locations
 8. create a constructions prop for stage
-9. create a function which makes locations get the initial actions
++ 9. create a function which makes locations get the initial actions
 10. create a function which separates the wait actions which depend on the current actions from those who don't
-11. create a function which creates a group in the map for every current action which has dependecies
-12. make checker run when the actions they depend on are fired
-13. update the current pull, to remove everything that is not needed (actions with 0 repeats or those who need to be substituted)
++ 11. create a function which creates a group in the map for every current action which has dependecies
++ 12. make checker run when the actions they depend on are fired
++ 13. update the current pull, to remove everything that is not needed (actions with 0 repeats or those who need to be substituted)
 14. update the dependecy groups
 15. Rework action, so that funcs where the methods?
+
+
+in stage create 3 groups of actions, current, waiting and delayed, where current are 
+the one currently in pull, waiting, are the once who depend on curent and delayed, are
+the once whos provocative function is not in the pull yet

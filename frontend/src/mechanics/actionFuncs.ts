@@ -1,6 +1,8 @@
-import Level, { MapLocations } from './level';
+import Level from './level';
+import actionList from './action';
+import { MapLocations } from '../types/Maps';
 import Stage from './stage';
-import { getGraphNeighbour } from './utils';
+import { getGraphNeighbour, utilGetItemsString } from './utils';
 
 const INITIAL_PROPS = {
 	level: undefined,
@@ -112,5 +114,24 @@ const winWithRaftFuncs = ActionFuncs.generate({
 		return { btn: 'Escape', effect: `You have successfully escaped the ${buildRaftFuncs.props.level.map}` };
 	}
 });
+const collectItemsFuncs = ActionFuncs.generate({
+	props: INITIAL_PROPS,
+	action: () => {
+		const { level, currentPos, stage } = collectItemsFuncs.props;
+		if (!level || !currentPos || !stage) throw new Error();
+		return stage.move({});
+	},
+	title: () => {
+		const buttonString = utilGetItemsString(collectItemsFuncs);
+		return { btn: buttonString, effect: 'collected items' };
+	}
+});
 
-export default { goForwardFuncs, goBackwardFuncs, buildShelterFuncs, buildRaftFuncs, winWithRaftFuncs };
+export default {
+	goForwardFuncs,
+	goBackwardFuncs,
+	buildShelterFuncs,
+	buildRaftFuncs,
+	winWithRaftFuncs,
+	collectItemsFuncs
+};

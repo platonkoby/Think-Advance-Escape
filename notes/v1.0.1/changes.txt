@@ -1,0 +1,45 @@
+The update includes all the unnamed updates between version 1.0.0 and 1.0.1
+
+New things:
+
+    - constructions are added
+    - common and uncommon items are added for some locations
+    - plans for the next major updates added
+    - current version documentation
+    - actionCheckers are created
+
+    data - a new directory which contains the objects used in game, sucn as constructions, items and others
+
+    types - a new directory which contains the types
+        
+Changes:
+
+    Mechanics
+
+        - MAJOR changes to action
+            1) runUtils now also runs functionality which checks if delayed actions need to become 'current' actions
+                and be availbale for the locaitons to take and later be displayed to the user
+            2) there are now 2 types of actions, delayed and nondelayed
+
+        - MAJOR changes to level
+            1) the level object now has a single object with allLocations which has all the nonFixed, WC, inital and all locations
+            2) constructions are added to level
+            3) list of all tags is added to level
+            4) level now acts as the representation of the game, which stores all the possible actions/locations/constructions for the chosen 
+                gameMap
+
+        - MAJOR changes to loctions
+            1) Locations do not assign the actions to them before being exported, actions are now assinged in Stage
+            2) LocationsCollection class is created, which creates a collection of locations depending on the map
+
+        - MAJOR changes to stage
+            1) stage now has the list of allActions, allLocations and a depencyMap for them
+            2) the actions are assigned to locations in stage now
+            3) actions are now split to initialActions and delayedActions, first being the actions which are currently displayed to user and
+                second are monitoring the initial actions and are becoming a part of the first group if certain condition is met
+        
+        - minor changes to utils
+            1) a function which returns a string with the items which could be found in the locaiton is returned, used to display the action
+                on a button
+        
+    

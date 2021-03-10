@@ -4,15 +4,19 @@ import Player from './mechanics/player';
 import Loading from './Loading';
 import { ActionFuncs as Func, ActionTitle } from './mechanics/actionFuncs';
 import Stage from './mechanics/stage';
-import { Action } from './mechanics/action';
+import { Action, DelayedAction } from './mechanics/action';
 
 function Game({ loading, level, player, startGame }: Props) {
 	const [ currentStage, setCurrentStage ] = useState<Stage | undefined>();
 	const [ currentEffect, setCurrentEffect ] = useState('');
 
-	const handleClick = (actionFuncs: Func, action: Action) => {
-		action.runUtils();
-		setCurrentStage(actionFuncs.action());
+	const handleClick = (actionFuncs: Func, action: Action | DelayedAction) => {
+		if (currentStage) {
+			action.runUtils(currentStage);
+		}
+		const stage = actionFuncs.action();
+		console.log(stage);
+		setCurrentStage(stage);
 		setCurrentEffect(actionFuncs.title().effect);
 	};
 	useEffect(
@@ -29,10 +33,14 @@ function Game({ loading, level, player, startGame }: Props) {
 		() => {
 			if (!loading && level) {
 				console.log(level);
-				if (level.initialLocation === undefined) throw new Error('No Initial Location');
+				if (level.allLocations.initialLocation === undefined) throw new Error('No Initial Location');
 				level.graph.forEach((pos) => {
 					if (pos.location.initial) {
-						setCurrentStage(Stage.generate({ currentLocation: pos }));
+						const { allActions, allLocations } = level;
+
+						setCurrentStage(
+							Stage.generate({ currentLocation: pos, allActions, allLocations: allLocations.all })
+						);
 					}
 				});
 			}

@@ -1,19 +1,30 @@
 // import actions from './actions.json';
 // import { LocationInterface, Climate } from './level';
 import { LocationType, Tag } from '../types/locationTypes';
+import { winWithRaftChecker } from './actionCheckers';
 import funcs, { ActionFuncs as Func } from './actionFuncs';
 import Player from './player';
+import Stage from './stage';
 
-type ActionMethods = 'runUtils';
+type ActionMethods = 'runUtils' | 'delayed';
+type ActionType = 'dynamic' | 'static';
+type ActionTitle =
+	| 'go forward'
+	| 'collect common items'
+	| 'win with a raft'
+	| 'build raft'
+	| 'build a shleter'
+	| 'go backward';
 
 class Action {
-	title: string;
+	title: ActionTitle;
 	description: string;
 	forTags: Tag[];
 	forTypes: LocationType[];
 	func: Func;
-	type: ('dynamic' | 'static' | 'wait')[];
+	type: ActionType[];
 	repeats: number;
+	delayed: boolean;
 
 	constructor(props: Omit<Action, ActionMethods>) {
 		const { title, description, forTags, forTypes, func, type, repeats } = props;
@@ -24,14 +35,26 @@ class Action {
 		this.func = func;
 		this.type = type;
 		this.repeats = repeats;
+		this.delayed = false;
 	}
 
-	runUtils() {
+	runUtils(stage: Stage) {
 		this.repeats = this.repeats - 1;
+		stage.updateAllActions(this);
 	}
 	static generate(props: Omit<Action, ActionMethods>) {
 		const action = new Action(props);
 		return action;
+	}
+}
+class DelayedAction extends Action {
+	waitFor: Action['title'][];
+	checker: (props: any) => void;
+	constructor(props: Omit<DelayedAction, ActionMethods>) {
+		super(props);
+		this.waitFor = props.waitFor;
+		this.delayed = true;
+		this.checker = props.checker;
 	}
 }
 
@@ -46,7 +69,7 @@ const goForward = new Action({
 	repeats: Infinity
 });
 const goBackward = new Action({
-	title: 'move to',
+	title: 'go backward',
 	description: 'move to the previous location',
 	forTags: [ 'explore' ],
 	forTypes: [ 'all' ],
@@ -64,7 +87,7 @@ const buildShelter = new Action({
 	repeats: 1
 });
 const buildRaft = new Action({
-	title: 'build an escape raft',
+	title: 'build raft',
 	description: 'build a raft, which is used to escape from an island',
 	forTags: [ 'coastal' ],
 	forTypes: [ 'win condition' ],
@@ -73,18 +96,28 @@ const buildRaft = new Action({
 	repeats: 1
 });
 
-const winWithRaft = new Action({
+const winWithRaft = new DelayedAction({
 	title: 'win with a raft',
 	description: "player built a raft and now needs to escape on it, don't forget to gather resources!",
 	forTags: [ 'coastal' ],
 	forTypes: [ 'win condition' ],
 	func: funcs.winWithRaftFuncs,
-	type: [ 'static', 'wait' ],
-	repeats: 1
+	type: [ 'static' ],
+	repeats: 1,
+	waitFor: [ 'build raft' ],
+	checker: winWithRaftChecker
 });
 
-const actionList: Action[] = [ goForward, goBackward, buildShelter, buildRaft, winWithRaft ];
-const waitActionList: Action[] = actionList.filter((action) => (action.type.includes('wait') ? true : false));
-console.log(waitActionList);
+const collectItems = Action.generate({
+	title: 'collect common items',
+	description: 'function created to perform the collection of common items in the area',
+	forTags: [ 'all' ],
+	forTypes: [ 'all' ],
+	func: funcs.collectItemsFuncs,
+	type: [ 'static' ],
+	repeats: Infinity
+});
+
+const actionList: Action[] = [ goForward, goBackward, buildShelter, buildRaft, winWithRaft, collectItems ];
 export default actionList;
-export { Action };
+export { Action, DelayedAction };

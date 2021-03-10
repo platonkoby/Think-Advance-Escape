@@ -1,0 +1,13 @@
+This version is created as a middle step toward the version 1.1.0
+
+In my plans to version 1.1.0, i wanted Stage to have 3 action groups. One group
+for the current actions, second for the actions which depend on the current actions
+and third with the rest of the actions.
+
+Initialy i forgot that i wanted 3 groups, so i created only 2, which had initalActions
+and delayedActions, where initialActions represent currentActions and delayedActions 
+represents the other 2 groups.
+
+It is not that bad that I forgot the initial plan, because it actually was quite hard to,
+implement the functionalily even for only 2 groups
+

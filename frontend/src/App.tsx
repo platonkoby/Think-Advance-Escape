@@ -11,7 +11,7 @@ function App() {
 	const [ loading, setLoading ] = useState(true);
 
 	const startGame = (): void => {
-		const level = Level.generate('desserted island');
+		const level = Level.generate();
 		setLevel(level);
 		setPlayer(Player.generate());
 	};

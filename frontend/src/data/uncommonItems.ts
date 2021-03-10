@@ -9,16 +9,18 @@ export class UncommonItem {
 
 const vine = new UncommonItem('vine');
 
-const jungleUncommonItems: UncommonItem[] = [ vine ];
-const beachUncommonItems: UncommonItem[] = [];
-const caveUncommonItems: UncommonItem[] = [];
-const rockyHillsUncommonItems: UncommonItem[] = [];
-const whiteSandsUncommonItems: UncommonItem[] = [];
+const jungle: UncommonItem[] = [ vine ];
+const beach: UncommonItem[] = [];
+const cave: UncommonItem[] = [];
+const rockyHills: UncommonItem[] = [];
+const whiteSands: UncommonItem[] = [];
+const test: UncommonItem[] = [];
 
 export default {
-	jungleUncommonItems,
-	beachUncommonItems,
-	caveUncommonItems,
-	rockyHillsUncommonItems,
-	whiteSandsUncommonItems
+	jungle,
+	beach,
+	cave,
+	rockyHills,
+	whiteSands,
+	test
 };

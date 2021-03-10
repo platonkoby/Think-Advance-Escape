@@ -1,0 +1,54 @@
+Stage, contains the game data and is updated with every action run
+
+Stage is created based on the Level, it only contains values, which can be taken from the Level
+
+How stage is created and updated
+
+1. Initialy stage is created when the level is creted. There Stage.generate() is used
+    to create stage. The values passed in this function: 
+
+    - currentLocation - is an initial location, which comes from the location graph in Level
+    - allActions - the list of actions, which is got from the Level
+    - allLocations.all - the list of locations whic his got from the Level
+    
+
+2. With those initial values in Stage.generate():
+
+    - Dependency map is built based on the set of provocativeActions. This set is got
+        from all delayedActions.waitFor
+
+        i. from there, a new map is built with keys being the titles of 
+            provocativeActions and keys - dependentActions
+
+    - new stage is created with passed in props, which are recieved from level and a newly
+        created dependency map. Stage is not yet returned, therfore currentStage is not 
+        yet set.
+
+    - After stage is createdm Locations still don't have any assigned actions, therefore
+        Stage,locationGetAction() is called
+
+        i. in locationGetAction, locations get actions from the initial Action pull, depending
+            on location's tags and types.
+
+    - Stage is returned and set as currentStage
+
+3. When the user click on the button, which calls the action, before the action is 
+    actually called:
+
+    - the button's action is updated with action.runUtils().
+
+        i. there the acton's repeats are decreased by 1.
+
+        ii. Also from there the stage.updateAllActions() is called. It is called here,
+            because the allActions depend on the action which is being called
+
+4. After the action updates, action is ran:
+
+    - the action() is being playedm which created changes to the current stage,
+        (changes like: currentlLocation or constructions)
+
+    - Updated are the pushed to the stage.move(), which generates a new stage using
+        the old stage and the updates
+
+
+

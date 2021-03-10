@@ -1,8 +1,10 @@
 import { CommonItem } from '../data/commonItems';
 import { UncommonItem } from '../data/uncommonItems';
 import { Action } from '../mechanics/action';
+import LocationsCollection from '../mechanics/location';
+import { GameMap } from './Maps';
 
-export type LocationTitle = 'beach' | 'cave' | 'rocky hills' | 'jungle' | 'white sands';
+export type LocationTitle = 'beach' | 'cave' | 'rocky hills' | 'jungle' | 'white sands' | 'test';
 export type Tag =
 	| 'explore'
 	| 'rough terrain'
@@ -15,12 +17,20 @@ export type Tag =
 	| 'all';
 export type LocationType = 'large' | 'medium' | 'small' | 'win condition' | 'initial location' | 'all';
 export type OneLoc = LocWC | LocSmall | LocLarge | LocMedium;
-export type GameMap = 'desserted island';
+
 export type AllLoc = OneLoc | LocWC | LocInit;
 interface Items {
 	commonItems: CommonItem[];
 	uncommonItems: UncommonItem[];
 }
+export interface AllLocations {
+	all: AllLoc[];
+	nonFixedLocations: (LocSmall | LocLarge | LocMedium)[];
+	initialLocations: LocInit[];
+	winConditionLocations: LocWC[];
+}
+export type LocationsCollectionMethods = 'setInitialLocations' | 'setWCLocations' | 'setNonFixedLocations';
+export type LocationCollectionProps = Omit<LocationsCollection, LocationsCollectionMethods>;
 
 interface Loc {
 	title: LocationTitle;

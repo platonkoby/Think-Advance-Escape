@@ -1,4 +1,5 @@
-import { MapLocations } from './level';
+import { MapLocations } from '../types/Maps';
+import { ActionFuncs } from './actionFuncs';
 
 interface getNeighbour {
 	graph: Map<number, MapLocations>;
@@ -16,4 +17,14 @@ export const getGraphNeighbour = ({ graph, currentPos, direction }: getNeighbour
 	});
 	if (!neighbourLoc) throw new Error();
 	return neighbourLoc;
+};
+
+export const utilGetItemsString = (currentPos: ActionFuncs): string => {
+	if (!currentPos.props.currentPos) throw new Error();
+	const { commonItems, uncommonItems } = currentPos.props.currentPos.location.items;
+	let string = [ 'collect: ' ];
+	commonItems.forEach((item) => item && string.push(`${item.title}, `));
+	uncommonItems.forEach((item) => item && string.push(`${item.title}, `));
+	if (string.length === 1) return 'disable';
+	return string.reduce((a, b) => a + b);
 };

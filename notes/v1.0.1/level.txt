@@ -1,0 +1,29 @@
+Level is generated in the startGame functions, which is called in the beggining of the game.
+
+Level , is an object which had all the possible actions, locations, constructions, items
+and others for the map chosen (for no is only 'desserted island')
+
+Level is used by stage to get its values
+
+Level is not meant to update thoughout the game
+
+How is Level created:
+
+1. Level.generate() is called and set with setLevel()
+
+2. in the static generate method
+
+    - level gets allLocations, using the LocatinCollection.generate()
+        method, which takes in map: GameMap as prop
+
+    - constructions are got from the getConstructions function
+
+    - graph for all locations is created, using generateGraph function, this graph is the
+        representation of the 'paper map' for the chose map. Stage uses it, to move to
+        different locations
+
+    - the list of tags is created from the locations
+
+    - allActions are chosen, depending on the tags list
+
+    - level is created with the props above and returned, therefore set wiht setLevel()
