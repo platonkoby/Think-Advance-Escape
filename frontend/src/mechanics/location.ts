@@ -1,5 +1,3 @@
-import { Action } from './action';
-import actionList from './action';
 import {
 	LocInit,
 	LocWC,
@@ -9,12 +7,12 @@ import {
 	LocationType,
 	AllLocations,
 	AllLoc,
-	LocationCollectionProps,
-	LocationTitle
-} from '../types/locationTypes';
+	LocationCollectionProps
+} from '../types/LocationTypes';
 import commonItems from '../data/commonItems';
 import uncommonItems from '../data/uncommonItems';
-import { dessertedIsland, GameMap } from '../types/Maps';
+import { GameMap } from '../types/Maps';
+import { dessertedIsland } from '../data/Maps';
 
 const winCon: 'win condition' = 'win condition';
 const initLoc: 'initial location' = 'initial location';
@@ -88,42 +86,6 @@ let test: LocSmall = {
 
 const locations = [ cave, rockyHills, jungle, whiteSands, beach, test ];
 
-// function getNonFixedLocations(): (LocSmall | LocMedium | LocLarge)[] {
-// 	const nonFixedLocs = <(LocSmall | LocMedium | LocLarge)[]>locations.filter((location) => location.fixed === false);
-// 	return nonFixedLocs;
-// }
-// // function getInitialLocations(): LocInit[] {
-// 	const initialLocs = utilityLocationSearch(true, initLoc);
-
-// 	if (initialLocs.length < 1) throw new Error('utilityLocationSearch is written wrong or no inital location defined');
-
-// 	return <LocInit[]>initialLocs;
-// }
-// function getWCLocations(): LocWC[] {
-// 	const wcLocs = utilityLocationSearch(true, winCon);
-
-// 	if (wcLocs.length < 1) throw new Error('utilityLocationSearch is written wrong or no WC defined');
-
-// 	return <LocWC[]>wcLocs;
-// }
-// function utilityLocationSearch(fixed: boolean, type: LocationType) {
-// 	const askedLocs = locations.filter((location) => {
-// 		if (location.fixed === fixed) {
-// 			if (Array.isArray(location.type)) {
-// 				const types = location.type;
-// 				if (type === winCon || (type === initLoc && types.indexOf(type) > -1)) return true;
-// 			} else if (location.type === type) {
-// 				return true;
-// 			} else {
-// 				return false;
-// 			}
-// 		} else {
-// 			return false;
-// 		}
-// 	});
-// 	return askedLocs;
-// }
-
 class LocationsCollection {
 	all: AllLoc[];
 	initialLocation?: LocInit;
@@ -138,24 +100,28 @@ class LocationsCollection {
 		if (initialLocs.length < 1)
 			throw new Error('utilityLocationSearch is written wrong or no inital location defined');
 
-		this.initialLocation = <LocInit>initialLocs[0];
+		this.initialLocation = initialLocs[0] as LocInit;
 	}
 
 	setWCLocations(locations: AllLoc[] = this.all) {
 		const wcLocs = LocationsCollection.utilityLocationSearch(true, winCon, locations);
 
 		if (wcLocs.length < 1) throw new Error('utilityLocationSearch is written wrong or no WC defined');
-		this.winConditionLocations = <LocWC[]>wcLocs;
+		this.winConditionLocations = wcLocs as LocWC[];
 	}
 
 	setNonFixedLocations(locations: AllLoc[] = this.all) {
-		const nonFixed = <(LocSmall | LocMedium | LocLarge)[]>locations.filter((location) => location.fixed === false);
+		const nonFixed = locations.filter((location) => location.fixed === false) as (
+			| LocSmall
+			| LocMedium
+			| LocLarge)[];
+
 		if (nonFixed.length < 1) throw new Error();
 		this.nonFixedLocations = nonFixed;
 	}
 
 	static setMapLocations(map: GameMap, all: AllLocations['all']) {
-		const { title, locations } = map;
+		const locations = map.locations;
 		//@ts-ignore
 		return all.filter((location) => locations.includes(location.title));
 	}
@@ -171,9 +137,8 @@ class LocationsCollection {
 				} else {
 					return false;
 				}
-			} else {
-				return false;
 			}
+			return false;
 		});
 		return askedLocs;
 	}
@@ -184,7 +149,6 @@ class LocationsCollection {
 		collection.setInitialLocations();
 		collection.setNonFixedLocations();
 		collection.setWCLocations();
-		console.log(collection);
 		return collection;
 	}
 }

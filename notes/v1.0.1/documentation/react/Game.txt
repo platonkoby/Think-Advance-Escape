@@ -1,0 +1,15 @@
+- handleClick(actionFuncs: Func, action: Action | DelayedAction), 
+    1) is responsible for handling click of the buttons which represents actions 
+    2) runs utils of the action pressed 
+    3) creates and sets a new stage which is returned from chosen action's actionFuncs.action()
+    4) sets the effect text which tells the user what has chosen action done.
+
+useStates:
+    -currentStage, is the stage the game is in
+
+    -currentEffect, the effect of last chosen action, which is displayed to user
+
+useEffects:
+    -start game, therefore sets level and player
+
+    -creates the initial stage of the game, which depends on the level

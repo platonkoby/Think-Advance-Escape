@@ -17,4 +17,6 @@ const rockyHills: CommonItem[] = [];
 const whiteSands: CommonItem[] = [];
 const test: CommonItem[] = [];
 
-export default { jungle, beach, cave, rockyHills, whiteSands, test };
+const commonItems = { jungle, beach, cave, rockyHills, whiteSands, test };
+
+export default commonItems;

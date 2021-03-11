@@ -1,24 +1,12 @@
-import Level from './level';
-import actionList from './action';
-import { MapLocations } from '../types/Maps';
 import Stage from './stage';
 import { getGraphNeighbour, utilGetItemsString } from './utils';
+import { FuncProps, ActionTitle, ActionFuncsMethods } from '../types/ActionFuncs';
 
 const INITIAL_PROPS = {
 	level: undefined,
 	currentPos: undefined,
 	stage: undefined
 };
-
-interface FuncProps {
-	level: Level | undefined;
-	currentPos: MapLocations | undefined;
-	stage: Stage | undefined;
-}
-export interface ActionTitle {
-	btn: string;
-	effect: string;
-}
 
 export class ActionFuncs {
 	props: FuncProps;
@@ -30,12 +18,12 @@ export class ActionFuncs {
 		this.title = title;
 	}
 
-	static generate(props: ActionFuncs) {
+	static generate(props: Omit<ActionFuncs, ActionFuncsMethods>) {
 		const action = new ActionFuncs(props);
 		return action;
 	}
 }
-// export type Func = () => void |
+
 const goForwardFuncs = ActionFuncs.generate({
 	props: INITIAL_PROPS,
 	action: () => {
@@ -127,7 +115,7 @@ const collectItemsFuncs = ActionFuncs.generate({
 	}
 });
 
-export default {
+const actionFuncs = {
 	goForwardFuncs,
 	goBackwardFuncs,
 	buildShelterFuncs,
@@ -135,3 +123,5 @@ export default {
 	winWithRaftFuncs,
 	collectItemsFuncs
 };
+
+export default actionFuncs;

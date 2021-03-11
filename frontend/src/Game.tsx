@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import Level from './mechanics/level';
 import Player from './mechanics/player';
 import Loading from './Loading';
-import { ActionFuncs as Func, ActionTitle } from './mechanics/actionFuncs';
+import { ActionFuncs as Func } from './mechanics/actionFuncs';
 import Stage from './mechanics/stage';
 import { Action, DelayedAction } from './mechanics/action';
 
-function Game({ loading, level, player, startGame }: Props) {
+function Game({ loading, level, startGame }: Props) {
 	const [ currentStage, setCurrentStage ] = useState<Stage | undefined>();
 	const [ currentEffect, setCurrentEffect ] = useState('');
 
@@ -15,17 +15,9 @@ function Game({ loading, level, player, startGame }: Props) {
 			action.runUtils(currentStage);
 		}
 		const stage = actionFuncs.action();
-		console.log(stage);
 		setCurrentStage(stage);
 		setCurrentEffect(actionFuncs.title().effect);
 	};
-	useEffect(
-		() => {
-			// console.log(currentStage);
-		},
-		[ currentStage ]
-	);
-
 	useEffect(() => {
 		startGame();
 	}, []);
@@ -60,7 +52,7 @@ function Game({ loading, level, player, startGame }: Props) {
 				<h2>You:</h2>
 				<ul>
 					{currentStage.currentLocation.location.actions.map((action) => {
-						if (action.repeats === 0) return;
+						if (action.repeats === 0) return null;
 						const actionFuncs = action.func;
 						actionFuncs.props = {
 							level,

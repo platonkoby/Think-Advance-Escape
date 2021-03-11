@@ -1,25 +1,11 @@
 import LocationsCollection from './location';
-import {
-	LocInit,
-	LocWC,
-	OneLoc,
-	AllLoc,
-	LocationTitle,
-	AllLocations,
-	LocationCollectionProps,
-	Tag
-} from '../types/locationTypes';
+import { LocInit, LocWC, OneLoc, AllLoc, LocationTitle, LocationCollectionProps, Tag } from '../types/LocationTypes';
 import constructionsData, { Construction } from '../data/constructions';
-import { MapLocations, GameMap, dessertedIsland } from '../types/Maps';
+import { MapLocations, GameMap } from '../types/Maps';
 import actionList, { Action, DelayedAction } from './action';
+import { dessertedIsland } from '../data/Maps';
+import { LevelMethods, AllAction } from '../types/Level';
 
-export interface AllAction {
-	initialActions: (Action | DelayedAction)[];
-	delayedActions: DelayedAction[];
-}
-
-type LevelMethods = '';
-type Props = Omit<Level, LevelMethods>;
 class Level {
 	map: GameMap;
 	allLocations: LocationCollectionProps;
@@ -36,19 +22,15 @@ class Level {
 		this.tags = tags;
 		this.allActions = allActions;
 	}
-	// createActions(player?: Player): void {
-	// 	this.actions = actionListGenerator(this.climate, this.locations, player);
-	// }
 
 	static generate(map: GameMap = dessertedIsland, actions: Action[] = actionList): Level {
 		const allLocations = LocationsCollection.generate(map);
 		const { all, winConditionLocations, nonFixedLocations, initialLocation } = allLocations;
 		if (!winConditionLocations || !nonFixedLocations || !initialLocation) throw new Error();
-		// const locations: AllLoc[] = selectLocations(map, all);
 		const constructions: Construction[] = getConstructions(map, all);
 		const graph: Map<number, MapLocations> = generateGraph(
 			winConditionLocations,
-			randomiseLocations(nonFixedLocations),
+			randomiseLocations(nonFixedLocations, 4),
 			initialLocation
 		);
 		const tags = getAllTags(all);
@@ -59,9 +41,14 @@ class Level {
 	}
 }
 
-function randomiseLocations(nonFixedLocations: LocationsCollection['nonFixedLocations']): OneLoc[] {
-	const chosenLocations: OneLoc[] = [];
+function randomiseLocations(
+	nonFixedLocations: LocationsCollection['nonFixedLocations'],
+	locationNum: number
+): OneLoc[] {
 	if (!nonFixedLocations) throw new Error();
+	if (locationNum > nonFixedLocations.length) throw new Error('not enough nonFixedLocations for this map');
+	const chosenLocations: OneLoc[] = [];
+
 	recursive(nonFixedLocations.length - chosenLocations.length);
 
 	return chosenLocations;
@@ -78,22 +65,10 @@ function randomiseLocations(nonFixedLocations: LocationsCollection['nonFixedLoca
 
 		chosenLocations.push(location);
 
-		if (chosenLocations.length < 4) {
+		if (chosenLocations.length < locationNum) {
 			recursive(n);
 		}
 	}
-}
-
-function getInitialLocation(map: GameMap, allLocations: AllLocations): LocInit {
-	const location = allLocations.initialLocations.find((location: LocInit) => location.for === map);
-	if (location === undefined) throw new Error(`No Initial Location for ${map}`);
-	return location;
-}
-
-function getWinConditionLocations(map: GameMap, winConditionLocations: AllLocations['winConditionLocations']): LocWC[] {
-	const locations = winConditionLocations.filter((location) => location.for === map);
-	if (locations.length < 1) throw new Error(`No Initial Location for ${map}`);
-	return locations;
 }
 
 function generateGraph(winConditions: LocWC[], nonFixed: OneLoc[], initialLoc: LocInit): Map<number, MapLocations> {
@@ -150,23 +125,18 @@ function getConstructions(map: GameMap, locations: AllLoc[]): Construction[] {
 	return constructions;
 }
 
-function selectLocations(map: GameMap, locations: AllLoc[]): AllLoc[] {
-	console.log(map);
-	console.log(locations);
-	return locations;
-}
 function getAllTags(locations: AllLoc[]): Tag[] {
 	const starterTags = locations.map((loc) => loc.tags).flat(Infinity);
 	const tagsSet = new Set(starterTags);
 	const tags: Tag[] = [];
 
-	tagsSet.forEach((tag) => tags.push(<Tag>tag));
+	tagsSet.forEach((tag) => tags.push(tag as Tag));
 	return tags;
 }
 function getAllActions(tags: Tag[], actions: (Action | DelayedAction)[]) {
 	actions = actions.filter(filterFunc);
-	const delayedActions = <DelayedAction[]>actions.filter((action) => action.delayed);
-	const initialActions = <Action[]>actions.filter((action) => !action.delayed);
+	const delayedActions = actions.filter((action) => action.delayed) as DelayedAction[];
+	const initialActions = actions.filter((action) => !action.delayed) as Action[];
 
 	return { delayedActions, initialActions };
 
@@ -179,3 +149,5 @@ function getAllActions(tags: Tag[], actions: (Action | DelayedAction)[]) {
 }
 
 export default Level;
+
+type Props = Omit<Level, LevelMethods>;

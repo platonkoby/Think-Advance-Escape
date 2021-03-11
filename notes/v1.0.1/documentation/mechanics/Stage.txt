@@ -1,0 +1,44 @@
+class Stage
+
+    properies:
+        -currentLocation: MapLocations
+        -allLocations: LocationCollectionProps['all']
+        -allActions: AllAction
+        -dependencyMap?: Map<Action['title'], DelayedAction[]>
+
+    methods:
+        -move(props: Optional<Props>): Stage
+        -locationGetAction()
+        -updateAllActions(action: Action | DelayedAction)
+    
+    static:
+        -generate(props: Props)
+
+
+- currentLocation, is a location where the user currently is
+
+- allLocations, is a list of all the locations for this game
+
+- allActions, is an object with delayed and initial actions, the prior is used to create dependencyMap, the later
+is used as a pull of actions from which locations choose their current actions
+
+- dependencyMap, is used to monitor actions progression, meaning that it takes inital actions and sets their title
+as keys and as their values, the delayed actions with their titles in wairFor are set
+
+Methods:
+
+    - move, is the place which gets/makes all the changes to the current Stage and creates + returns a new stage,
+    based on the changed current Stage
+
+    - locationGetAction, makes allLocations choose needed actions from initialActions pull
+
+    - updateAllActions, updated allActions, moves values from delayed to initial, so that locations had a new choice
+
+Static:
+
+    -generate, creates a new instance of Stage
+
+Related functions:
+
+- buildDependecyMap(allActions: Stage['allActions']): Stage['dependencyMap'], this function creates a dependencyMap
+for Stage

@@ -1,0 +1,55 @@
+Is a class for non delayed actions
+
+class Action
+    properties:
+        -title: ActionTitile
+        -description: string
+        -forTags: Tags[]
+        -forTypes: LocationType
+        -func: Func
+        -type: ActionType[]
+        -repeats: number
+        -delayed: boolean
+
+    methods:
+        -runUtils(stage: Stage)
+
+
+- title is given to the action, for now the main use of title is that titles are used to generate
+the depencyMap
+
+- description, right now there is no much use for description its purpose initialy was thought of
+to give user the desciption of the action, maybe it will be implemented later while hovering
+
+- forTags, is used when assigning actions to locations, forTags is compared with Tags in location,
+and allows it to become a candidate for this location
+
+- forTypes, is used to confirm or decline action candidates for the location's action
+
+- func, us an object with 3 props (props, action, title)
+    1) action is performing changes to stage, so that they can be passed to move and stage 
+    was updated (action's purpose). 
+    2) title creates the title for the action which will be displayed on the button for user,
+    also it creates an effect string which is showed to user to let them know what the action
+    has done
+    3) props are Level, currentPos and stage, which other 2 functions use for their functionality
+
+- type can be dynamic or static, dynamiic represents action which happen between locations 
+(eg. go to other lcoation). Static represent actions which are happening within the locaiton
+(eg. build shelter)
+
+- repeats is the number of times which the action can be called, decreases whith each call
+
+- delayed, used to differentiate between delayed actions and not, delayed are always true and 
+non-delayed are always false
+
+Methods:
+
+- runUtils runs the utility actions such as, reduces the amount of repeats after each action call.
+Inside of runUtils, also the functions which are affected by this actions are called, for example,
+stage's actions are rearranged depending on the function called, therfore the rearrange funcion 
+is called here
+
+
+
+

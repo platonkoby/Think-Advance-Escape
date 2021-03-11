@@ -1,11 +1,6 @@
 import { MapLocations } from '../types/Maps';
 import { ActionFuncs } from './actionFuncs';
-
-interface getNeighbour {
-	graph: Map<number, MapLocations>;
-	currentPos: MapLocations;
-	direction: 'next' | 'prev';
-}
+import { getNeighbour } from '../types/Utils';
 
 export const getGraphNeighbour = ({ graph, currentPos, direction }: getNeighbour): MapLocations => {
 	let neighbourLoc: MapLocations | undefined;

@@ -1,3 +1,5 @@
+import { ItemInterface, Stats, Status } from '../types/Player';
+
 class Player {
 	stats: Stats;
 	status: Status;
@@ -22,27 +24,5 @@ class Player {
 		});
 	}
 }
-
-interface InjuryInterface {
-	title: string;
-}
-interface IllnessInterface {
-	title: string;
-}
-type ItemInterface = {
-	title: string;
-};
-
-type Stats = {
-	str: number;
-	agil: number;
-	int: number;
-};
-type Status = {
-	hunger: number;
-	thirst: number;
-	illness: IllnessInterface[] | null;
-	injuries: InjuryInterface[] | null;
-};
 
 export default Player;

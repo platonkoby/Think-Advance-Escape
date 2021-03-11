@@ -1,20 +1,8 @@
-// import actions from './actions.json';
-// import { LocationInterface, Climate } from './level';
-import { LocationType, Tag } from '../types/locationTypes';
+import { LocationType, Tag } from '../types/LocationTypes';
 import { winWithRaftChecker } from './actionCheckers';
 import funcs, { ActionFuncs as Func } from './actionFuncs';
-import Player from './player';
 import Stage from './stage';
-
-type ActionMethods = 'runUtils' | 'delayed';
-type ActionType = 'dynamic' | 'static';
-type ActionTitle =
-	| 'go forward'
-	| 'collect common items'
-	| 'win with a raft'
-	| 'build raft'
-	| 'build a shleter'
-	| 'go backward';
+import { ActionTitle, ActionMethods, ActionType } from '../types/Action';
 
 class Action {
 	title: ActionTitle;
@@ -42,14 +30,10 @@ class Action {
 		this.repeats = this.repeats - 1;
 		stage.updateAllActions(this);
 	}
-	static generate(props: Omit<Action, ActionMethods>) {
-		const action = new Action(props);
-		return action;
-	}
 }
 class DelayedAction extends Action {
 	waitFor: Action['title'][];
-	checker: (props: any) => void;
+	checker: (stage: Stage) => boolean;
 	constructor(props: Omit<DelayedAction, ActionMethods>) {
 		super(props);
 		this.waitFor = props.waitFor;
@@ -58,7 +42,6 @@ class DelayedAction extends Action {
 	}
 }
 
-// const buildShelter = new Action('build shelter', 'Build a shelter', [], [ 'large' ]);
 const goForward = new Action({
 	title: 'go forward',
 	description: 'move to the next location',
@@ -108,7 +91,7 @@ const winWithRaft = new DelayedAction({
 	checker: winWithRaftChecker
 });
 
-const collectItems = Action.generate({
+const collectItems = new Action({
 	title: 'collect common items',
 	description: 'function created to perform the collection of common items in the area',
 	forTags: [ 'all' ],

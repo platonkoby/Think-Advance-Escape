@@ -1,6 +1,5 @@
-import { LocationTitle } from '../types/locationTypes';
-
-type ConstructionType = 'shelter' | 'escape';
+import { LocationTitle } from '../types/LocationTypes';
+import { ConstructionType, ConstructionMethods } from '../types/Constructions';
 
 export class Construction {
 	title: string;
@@ -24,8 +23,7 @@ const raft = new Construction({
 	type: [ 'escape' ],
 	forLocations: [ 'beach' ]
 });
+const constructions = [ shelter, raft ];
+export default constructions;
 
-export default [ shelter, raft ];
-
-type ConstructionMethods = '';
 type Props = Omit<Construction, ConstructionMethods>;

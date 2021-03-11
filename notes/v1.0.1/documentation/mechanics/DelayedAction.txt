@@ -1,0 +1,25 @@
+DelayedAction is a class for actions which can get into the pull of actions for locations
+to choose, only after a certain condition is met
+
+class DelayedAction extends Action
+    properies:
+        -super()
+        -waitFor: Action['title'][]
+        -checker: (stage: Stage) => boolean
+
+delayedActions have all the same properties as regular actions. With only some differences
+
+DelayedAction differences:
+
+    -delayed is always true
+
+    -waitFor property is unqiue to DelayedAciton, wairFor has the titles of actions which this action is observing, once
+    one of those function is called, the checked for this delayedAction is called, if checker returns true, this delayed 
+    action is going to be added to the pull of actions for locations to choose
+
+    -checker is a functino which return a boolean, inside, checker checks for a certain condition to be met, if it is met,
+    the checker returns true
+
+
+
+

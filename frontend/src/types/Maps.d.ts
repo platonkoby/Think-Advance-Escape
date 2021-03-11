@@ -1,4 +1,4 @@
-import { AllLoc, LocationTitle } from './locationTypes';
+import { AllLoc, LocationTitle } from './LocationTypes';
 
 export type GameMap = DessertedIsland;
 
@@ -7,15 +7,10 @@ interface Maps {
 	locations: LocationTitle[];
 }
 
-interface DessertedIsland extends Maps {
+export interface DessertedIsland extends Maps {
 	title: 'desserted island';
 	locations: ['beach', 'cave', 'rocky hills', 'white sands', 'jungle'];
 }
-
-export const dessertedIsland: DessertedIsland = {
-	title: 'desserted island',
-	locations: [ 'beach', 'cave', 'rocky hills', 'white sands', 'jungle' ]
-};
 
 export interface MapLocations {
 	location: AllLoc;

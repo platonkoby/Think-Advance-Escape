@@ -16,7 +16,7 @@ const rockyHills: UncommonItem[] = [];
 const whiteSands: UncommonItem[] = [];
 const test: UncommonItem[] = [];
 
-export default {
+const uncommonItems = {
 	jungle,
 	beach,
 	cave,
@@ -24,3 +24,5 @@ export default {
 	whiteSands,
 	test
 };
+
+export default uncommonItems;
