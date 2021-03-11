@@ -1,6 +1,5 @@
 import Stage from './stage';
 
-// checks if the stage has a raft construction
 export const winWithRaftChecker = (stage: Stage) => {
 	if (stage.constructions) {
 		console.log(stage);

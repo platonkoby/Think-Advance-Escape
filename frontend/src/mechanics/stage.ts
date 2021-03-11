@@ -6,12 +6,11 @@ import { StageMethods } from '../types/Stage';
 import { Optional } from '../types/Utils';
 import { Construction } from '../data/constructions';
 
-// read Stage
 class Stage {
 	currentLocation: MapLocations;
 	allLocations: LocationCollectionProps['all'];
 	allActions: AllAction;
-	//dependecy map is updated if initalActions change
+
 	dependencyMap?: Map<Action['title'], DelayedAction[]>;
 	constructions?: Construction[];
 
@@ -24,16 +23,11 @@ class Stage {
 	}
 
 	move(props: Optional<Props>): Stage {
-		// creates a new stage with upates
 		return Stage.generate({ ...this, ...props });
 	}
 
 	locationGetAction() {
 		const locations = this.allLocations.map((location) => {
-			// actions are assigned to locations, depending on location's tags and type
-			// if action will have one or more of the location's tags in its action.forTags, it will become a candidate
-			// action candidates are are checked if they are for the right type, if yes, they are assigned to the location
-			// if action is all in type or tags, it skips the check step
 			location.actions = this.allActions.initialActions.filter((action) => {
 				if (action.forTags.includes('all')) return true;
 				if (action.repeats < 1) return false;
@@ -57,14 +51,13 @@ class Stage {
 	}
 
 	static updateAllActions(action: Action | DelayedAction, stage: Stage) {
-		// actions are updated, on every stage, if chosen action has dependencies
 		if (!stage.dependencyMap) throw new Error();
 		let deps = stage.dependencyMap.get(action.title);
 		if (deps) {
 			deps = deps.filter((action) => action.checker(stage));
 			let { initialActions, delayedActions } = stage.allActions;
 			stage.allActions.initialActions = [ ...initialActions.filter((action) => action.repeats > 0), ...deps ];
-			//ignore below, because delayed action, cannot not have a checker
+
 			//@ts-ignore
 			stage.allActions.delayedActions = delayedActions.filter((action) => !deps.includes(action));
 		}
@@ -73,7 +66,7 @@ class Stage {
 	static generate(props: Props) {
 		const dependencyMap = buildDependencyMap(props.allActions);
 		const stage = new Stage({ ...props, dependencyMap });
-		// this is called here, because the values of the current stage are used
+
 		stage.locationGetAction();
 		console.log(stage);
 		return stage;

@@ -130,7 +130,6 @@ const collectItemsFuncs = ActionFuncs.generate({
 		return stage.move({});
 	},
 	title: () => {
-		// creates a string to show the user which items can be collected in this location
 		const buttonString = utilGetItemsString(collectItemsFuncs);
 		return { btn: buttonString, effect: 'collected items' };
 	}

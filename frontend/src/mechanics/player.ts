@@ -1,4 +1,4 @@
-// not yer implemented, ignore
+// not yet implemented, ignore
 
 import { ItemInterface, Stats, Status } from '../types/Player';
 

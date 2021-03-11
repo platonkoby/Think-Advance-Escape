@@ -25,7 +25,7 @@ class Action {
 		this.repeats = repeats;
 		this.delayed = false;
 	}
-	// filters actionFuncs and checks which ones have the same forAction as action's title, assigns one to another
+
 	getActionFuncs(action: Action | DelayedAction) {
 		const actionFuncs = funcs.filter((funcs) => funcs.forAction === action.title)[0];
 		if (!actionFuncs) throw new Error('no action funcs for this action');
@@ -33,18 +33,17 @@ class Action {
 		this.funcs = actionFuncs;
 	}
 
-	// runUtils runs the updated for the action and some of the fucntion which depend on this action
 	runUtils(stage: Stage) {
 		this.repeats = this.repeats - 1;
-		// updateAllActions updates actions for the given stage
+
 		Stage.updateAllActions(this, stage);
-		// assigns stage's actions in the pull to locations
+
 		stage.locationGetAction();
 	}
 
 	static generate(props: Props) {
 		const newAction = new Action(props);
-		// assigns funcs to action
+
 		newAction.getActionFuncs(newAction);
 		return newAction;
 	}
@@ -60,7 +59,7 @@ class DelayedAction extends Action {
 	}
 	static generate(props: Omit<DelayedAction, ActionMethods>) {
 		const newAction = new DelayedAction(props);
-		// assigns funcs to action
+
 		newAction.getActionFuncs(newAction);
 		return newAction;
 	}

@@ -101,7 +101,7 @@ function generateGraph(winConditions: LocWC[], nonFixed: OneLoc[], initialLoc: L
 		graph.set(graphArr[random], { location, neighbours: [] });
 		graphArr = graphArr.filter((x, index) => index !== random);
 	}
-	//gets a random, unique number, which is later used to randomly choose an item from an array
+
 	function getNumber(n: number, graph: Map<number, MapLocations>): number {
 		const random = Math.floor(Math.random() * n);
 		if (graphArr.length === 0) {

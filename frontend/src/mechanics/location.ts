@@ -119,13 +119,13 @@ class LocationsCollection {
 		if (nonFixed.length < 1) throw new Error();
 		this.nonFixedLocations = nonFixed;
 	}
-	// returns the locations for the chosen map
+
 	static setMapLocations(map: GameMap, all: AllLocations['all']) {
 		const locations = map.locations;
 		//@ts-ignore
 		return all.filter((location) => locations.includes(location.title));
 	}
-	// method used by other methods
+
 	static utilityLocationSearch(fixed: boolean, type: LocationType, locations: AllLoc[]) {
 		const askedLocs = locations.filter((location) => {
 			if (location.fixed === fixed) {
@@ -144,7 +144,6 @@ class LocationsCollection {
 	}
 
 	static generate(map: GameMap, all: AllLocations['all'] = locations) {
-		// all is changed to be the array of locations suitable only for chosen map
 		all = LocationsCollection.setMapLocations(map, all);
 		const collection = new LocationsCollection({ all });
 		collection.setInitialLocations();

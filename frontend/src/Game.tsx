@@ -10,8 +10,6 @@ function Game({ loading, level, startGame }: Props) {
 	const [ currentStage, setCurrentStage ] = useState<Stage | undefined>();
 	const [ currentEffect, setCurrentEffect ] = useState('');
 
-	/* The actionFuncs in not a must have prop, but since it had to be declared before and passing it makes the lige easier,
-	why not? */
 	const handleClick = (actionFuncs: Func, action: Action | DelayedAction) => {
 		let stage = actionFuncs.action();
 		if (currentStage) {
@@ -21,7 +19,6 @@ function Game({ loading, level, startGame }: Props) {
 		setCurrentEffect(actionFuncs.title().effect);
 	};
 	useEffect(() => {
-		//for now the game start is automatic and done here, later will be moved to Start.tsx
 		startGame();
 	}, []);
 	useEffect(
@@ -32,7 +29,7 @@ function Game({ loading, level, startGame }: Props) {
 				level.graph.forEach((pos) => {
 					if (pos.location.initial) {
 						const { allActions, allLocations } = level;
-						//creates initial game stage, depending on the level, look in notes to see how it works
+
 						setCurrentStage(
 							Stage.generate({ currentLocation: pos, allActions, allLocations: allLocations.all })
 						);
@@ -55,7 +52,6 @@ function Game({ loading, level, startGame }: Props) {
 				<h2>You:</h2>
 				<ul>
 					{currentStage.currentLocation.location.actions.map((action) => {
-						// hides the actions which are no longer needed
 						if (action.repeats === 0 || !action.funcs) return null;
 						const actionFuncs = action.funcs;
 						actionFuncs.props = {
@@ -65,7 +61,7 @@ function Game({ loading, level, startGame }: Props) {
 							stage: currentStage
 						};
 						const title = actionFuncs.title();
-						//for now, the collect items actions will be hidden in the locations where there are no items
+
 						if (title.btn === 'disable') return null;
 						return (
 							<li className="action" key={action.description}>
