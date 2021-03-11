@@ -13,10 +13,10 @@ function Game({ loading, level, startGame }: Props) {
 	/* The actionFuncs in not a must have prop, but since it had to be declared before and passing it makes the lige easier,
 	why not? */
 	const handleClick = (actionFuncs: Func, action: Action | DelayedAction) => {
+		let stage = actionFuncs.action();
 		if (currentStage) {
-			action.runUtils(currentStage);
+			action.runUtils(stage);
 		}
-		const stage = actionFuncs.action();
 		setCurrentStage(stage);
 		setCurrentEffect(actionFuncs.title().effect);
 	};
@@ -56,9 +56,10 @@ function Game({ loading, level, startGame }: Props) {
 				<ul>
 					{currentStage.currentLocation.location.actions.map((action) => {
 						// hides the actions which are no longer needed
-						if (action.repeats === 0) return null;
-						const actionFuncs = action.func;
+						if (action.repeats === 0 || !action.funcs) return null;
+						const actionFuncs = action.funcs;
 						actionFuncs.props = {
+							action,
 							level,
 							currentPos: currentStage.currentLocation,
 							stage: currentStage

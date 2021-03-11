@@ -1,0 +1,9 @@
+This version, was initialy thought of as a major update, however most of the major elements are
+implemented in v1.0.1. Because plans have changed, as described below, one of the biggest features
+in not implemented.
+
+
+While planning to split delyed actions into 3. I realised that because there is not much
+actions in total and spliting delyed into delayed and waiting is only going to reduce readability.
+At this scale, this split will either increase performance only by a small bit, or even worsen the
+performance.

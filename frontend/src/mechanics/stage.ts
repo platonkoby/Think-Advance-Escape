@@ -4,6 +4,7 @@ import { LocationCollectionProps } from '../types/LocationTypes';
 import { Action, DelayedAction } from './action';
 import { StageMethods } from '../types/Stage';
 import { Optional } from '../types/Utils';
+import { Construction } from '../data/constructions';
 
 // read Stage
 class Stage {
@@ -12,12 +13,14 @@ class Stage {
 	allActions: AllAction;
 	//dependecy map is updated if initalActions change
 	dependencyMap?: Map<Action['title'], DelayedAction[]>;
+	constructions?: Construction[];
 
-	constructor({ currentLocation, allActions, allLocations, dependencyMap }: Props) {
+	constructor({ currentLocation, allActions, allLocations, dependencyMap, constructions }: Props) {
 		this.currentLocation = currentLocation;
 		this.allLocations = allLocations;
 		this.allActions = allActions;
 		this.dependencyMap = dependencyMap;
+		this.constructions = constructions;
 	}
 
 	move(props: Optional<Props>): Stage {
@@ -53,16 +56,17 @@ class Stage {
 		this.allLocations = locations;
 	}
 
-	updateAllActions(action: Action | DelayedAction) {
+	static updateAllActions(action: Action | DelayedAction, stage: Stage) {
 		// actions are updated, on every stage, if chosen action has dependencies
-		if (!this.dependencyMap) throw new Error();
-		let deps = this.dependencyMap.get(action.title);
+		if (!stage.dependencyMap) throw new Error();
+		let deps = stage.dependencyMap.get(action.title);
 		if (deps) {
-			deps = deps.filter((action) => action.checker(this));
-			const { initialActions, delayedActions } = this.allActions;
-			this.allActions.initialActions = [ ...initialActions.filter((action) => action.repeats > 0), ...deps ];
+			deps = deps.filter((action) => action.checker(stage));
+			let { initialActions, delayedActions } = stage.allActions;
+			stage.allActions.initialActions = [ ...initialActions.filter((action) => action.repeats > 0), ...deps ];
+			//ignore below, because delayed action, cannot not have a checker
 			//@ts-ignore
-			this.allActions.delayedActions = delayedActions.filter((action) => !deps.includes(action));
+			stage.allActions.delayedActions = delayedActions.filter((action) => !deps.includes(action));
 		}
 	}
 

@@ -1,22 +1,28 @@
 import Stage from './stage';
 import { getGraphNeighbour, utilGetItemsString } from './utils';
 import { FuncProps, ActionTitle, ActionFuncsMethods } from '../types/ActionFuncs';
+import constructions from '../data/constructions';
+import { DelayedAction, Action } from './action';
+
+const [ shelter, raft ] = constructions;
 
 const INITIAL_PROPS = {
 	level: undefined,
 	currentPos: undefined,
-	stage: undefined
+	stage: undefined,
+	action: undefined
 };
 
-// later, maybe removed and subtituted with actions having unique action, title methods
 export class ActionFuncs {
 	props: FuncProps;
 	action: () => Stage;
 	title: () => ActionTitle;
-	constructor({ props = INITIAL_PROPS, action, title }: Props) {
+	forAction: Action['title'] | DelayedAction['title'];
+	constructor({ props = INITIAL_PROPS, action, title, forAction }: Props) {
 		this.props = props;
 		this.action = action;
 		this.title = title;
+		this.forAction = forAction;
 	}
 
 	static generate(props: Props) {
@@ -26,10 +32,11 @@ export class ActionFuncs {
 }
 
 const goForwardFuncs = ActionFuncs.generate({
+	forAction: 'go forward',
 	props: INITIAL_PROPS,
 	action: () => {
-		const { level, currentPos, stage } = goForwardFuncs.props;
-		if (!level || !currentPos || !stage) throw new Error();
+		const { level, currentPos, stage, action } = goForwardFuncs.props;
+		if (!level || !currentPos || !stage || !action) throw new Error();
 		const currentLocation = getGraphNeighbour({ graph: level.graph, currentPos, direction: 'next' });
 		return stage.move({ currentLocation });
 	},
@@ -45,10 +52,11 @@ const goForwardFuncs = ActionFuncs.generate({
 	}
 });
 const goBackwardFuncs = ActionFuncs.generate({
+	forAction: 'go backward',
 	props: INITIAL_PROPS,
 	action: () => {
-		const { level, currentPos, stage } = goForwardFuncs.props;
-		if (!level || !currentPos || !stage) throw new Error();
+		const { level, currentPos, stage, action } = goForwardFuncs.props;
+		if (!level || !currentPos || !stage || !action) throw new Error();
 		const currentLocation = getGraphNeighbour({ graph: level.graph, currentPos, direction: 'prev' });
 		return stage.move({ currentLocation });
 	},
@@ -65,11 +73,16 @@ const goBackwardFuncs = ActionFuncs.generate({
 });
 
 const buildShelterFuncs = ActionFuncs.generate({
+	forAction: 'build a shleter',
 	props: INITIAL_PROPS,
 	action: () => {
-		const { level, currentPos, stage } = buildShelterFuncs.props;
-		if (!stage || !currentPos || !level) throw new Error();
-		return stage.move({});
+		const { level, currentPos, stage, action } = buildShelterFuncs.props;
+		if (!stage || !currentPos || !level || !action) throw new Error();
+		if (!stage.constructions) {
+			return stage.move({ constructions: [ shelter ] });
+		}
+
+		return stage.move({ constructions: [ ...stage.constructions, shelter ] });
 	},
 	title: () => {
 		return { btn: 'build a shelter', effect: 'standart shelter built!' };
@@ -77,11 +90,15 @@ const buildShelterFuncs = ActionFuncs.generate({
 });
 
 const buildRaftFuncs = ActionFuncs.generate({
+	forAction: 'build raft',
 	props: INITIAL_PROPS,
 	action: () => {
-		const { level, currentPos, stage } = buildRaftFuncs.props;
-		if (!level || !currentPos || !stage) throw new Error();
-		return stage.move({});
+		const { level, currentPos, stage, action } = buildRaftFuncs.props;
+		if (!level || !currentPos || !stage || !action) throw new Error();
+		if (!stage.constructions) {
+			return stage.move({ constructions: [ raft ] });
+		}
+		return stage.move({ constructions: [ ...stage.constructions, raft ] });
 	},
 	title: () => {
 		if (!buildRaftFuncs.props.level) throw new Error('Something is wrong with the level map');
@@ -92,10 +109,11 @@ const buildRaftFuncs = ActionFuncs.generate({
 	}
 });
 const winWithRaftFuncs = ActionFuncs.generate({
+	forAction: 'win with a raft',
 	props: INITIAL_PROPS,
 	action: () => {
-		const { level, currentPos, stage } = winWithRaftFuncs.props;
-		if (!level || !currentPos || !stage) throw new Error();
+		const { level, currentPos, stage, action } = winWithRaftFuncs.props;
+		if (!level || !currentPos || !stage || !action) throw new Error();
 		return stage.move({});
 	},
 	title: () => {
@@ -104,10 +122,11 @@ const winWithRaftFuncs = ActionFuncs.generate({
 	}
 });
 const collectItemsFuncs = ActionFuncs.generate({
+	forAction: 'collect items',
 	props: INITIAL_PROPS,
 	action: () => {
-		const { level, currentPos, stage } = collectItemsFuncs.props;
-		if (!level || !currentPos || !stage) throw new Error();
+		const { level, currentPos, stage, action } = collectItemsFuncs.props;
+		if (!level || !currentPos || !stage || !action) throw new Error();
 		return stage.move({});
 	},
 	title: () => {
@@ -117,14 +136,14 @@ const collectItemsFuncs = ActionFuncs.generate({
 	}
 });
 
-const actionFuncs = {
+const actionFuncs = [
 	goForwardFuncs,
 	goBackwardFuncs,
 	buildShelterFuncs,
 	buildRaftFuncs,
 	winWithRaftFuncs,
 	collectItemsFuncs
-};
+];
 
 export default actionFuncs;
 

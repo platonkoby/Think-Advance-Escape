@@ -1,0 +1,23 @@
+New: 
+
+    -constructions are added to Stage
+
+Changes:
+
+Mechanics:
+
+    - MAJOR changes to actionFuncs
+        1) actionFuncs.props now also get the action, which represents it's owner action!
+        2) actionFuncs, now has the forAction property, which represents the title of the
+            owner action
+
+    - minor changes to how action gets actionFuncs
+        1) now actionFuncs are assigned automaticaly to actions
+        2) actions are changed so as in v1.0.0 they are created with Action.generate()
+
+
+    - minor changes to Stage
+        1) updateAllActions is now static ans is called in action.utils
+
+    - minor changes to DelayedAciton
+        !) now has static generate method

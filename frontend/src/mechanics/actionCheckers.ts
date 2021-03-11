@@ -1,8 +1,11 @@
 import Stage from './stage';
 
+// checks if the stage has a raft construction
 export const winWithRaftChecker = (stage: Stage) => {
-	const initialActions = stage.allActions.initialActions;
-	const raftCheck = initialActions.map((action) => action.title === 'build raft');
-	if (raftCheck.includes(true)) return true;
+	if (stage.constructions) {
+		console.log(stage);
+		const raft = stage.constructions.filter((construction) => construction.title === 'raft');
+		if (raft.length > 0) return true;
+	}
 	return false;
 };

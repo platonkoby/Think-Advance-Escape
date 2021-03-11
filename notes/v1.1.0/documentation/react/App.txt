@@ -1,0 +1,12 @@
+- startGame(), is a function which creates and sets level and player
+
+useStates:
+
+    -level, which is a current level or undefined
+    
+    -player, which is a current player or undefined
+
+    -loading, which is a boolean, which is true whenever level or player are falsey
+
+useEffects:
+    - when level and player are set, sets loading to false. [ level, player ]

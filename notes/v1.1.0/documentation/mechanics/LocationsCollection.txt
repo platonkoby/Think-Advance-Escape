@@ -1,0 +1,44 @@
+LocationsCollection, is used to create a collections of locations for a chosen map
+
+class LocationsCollection
+
+    properties:
+        -all: AllLoc[]
+        -initialLocation?: LocInit
+        -winConditionLocations?: LocWC[]
+        -nonFixedLocations?: (LocSmall | LocLarge | LocMedium)[]
+
+    methods:
+        -setInitialLocations(locations: AllLoc[] = this.all)
+        -setWCLocations(locations: AllLoc[] = this.all)
+        -setNonFixedLocations(locations: AllLoc[] = this.all)
+    
+    static:
+        -setMapLocations(map: GameMap, all: AllLocations['all'])
+        -utilityLocationsSearch(fixed: boolean, type: LocationType, locations: AllLoc[])
+        -generate(map: GameMap, all: AllLocations['all'] = locations)
+
+
+- all, is a list of actions, which is later used to create 3 other properties of this object and all is later
+changed to become a list of locatins which are only available for a certain map
+
+- setInitialLocation, is a initial location for the chosen map
+
+- winConditionLocations, is a list of locations with win conditions for a chosen map
+
+- nonFixedLocations, is a list of non fixed locations for a chosen map
+
+methods:
+
+    - setInitialLocations, sets initial location, used in generate
+
+    - setWCLocations, sets winConditionLocations, used in generate
+
+    - setNonFixedLocations, sets nonFixedLocations, used in generate
+
+static:
+
+    - setMapLocations, return a list of all locations for the given map, it is used in generae, to assign all
+
+    - utilityLocationsSearch, returns a list of locations depending on the input parameters, is is used in 
+    setInitialLocations and setWCLocations to get a list of locations

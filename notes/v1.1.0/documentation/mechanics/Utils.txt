@@ -1,0 +1,5 @@
+- getGraphNeighbour({ graph, currentPos, direction }: getNeighbour): MapLocations - used to navigate the level
+graph and return the next or previous value
+
+- utilGetItemsString(currentPos: ActionFuncs): string - returns a string which is used to give an collect items
+action's button a title, the string is based on the items which could be found in the location

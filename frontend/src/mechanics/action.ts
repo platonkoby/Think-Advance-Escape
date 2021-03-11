@@ -9,27 +9,44 @@ class Action {
 	description: string;
 	forTags: Tag[];
 	forTypes: LocationType[];
-	func: Func;
+	funcs?: Func;
 	type: ActionType[];
 	repeats: number;
 	delayed: boolean;
 
-	constructor(props: Omit<Action, ActionMethods>) {
-		const { title, description, forTags, forTypes, func, type, repeats } = props;
+	constructor(props: Props) {
+		const { title, description, forTags, forTypes, funcs, type, repeats } = props;
 		this.title = title;
 		this.description = description;
 		this.forTags = forTags;
 		this.forTypes = forTypes;
-		this.func = func;
+		this.funcs = funcs;
 		this.type = type;
 		this.repeats = repeats;
 		this.delayed = false;
+	}
+	// filters actionFuncs and checks which ones have the same forAction as action's title, assigns one to another
+	getActionFuncs(action: Action | DelayedAction) {
+		const actionFuncs = funcs.filter((funcs) => funcs.forAction === action.title)[0];
+		if (!actionFuncs) throw new Error('no action funcs for this action');
+		actionFuncs.props.action = action;
+		this.funcs = actionFuncs;
 	}
 
 	// runUtils runs the updated for the action and some of the fucntion which depend on this action
 	runUtils(stage: Stage) {
 		this.repeats = this.repeats - 1;
-		stage.updateAllActions(this);
+		// updateAllActions updates actions for the given stage
+		Stage.updateAllActions(this, stage);
+		// assigns stage's actions in the pull to locations
+		stage.locationGetAction();
+	}
+
+	static generate(props: Props) {
+		const newAction = new Action(props);
+		// assigns funcs to action
+		newAction.getActionFuncs(newAction);
+		return newAction;
 	}
 }
 class DelayedAction extends Action {
@@ -41,63 +58,63 @@ class DelayedAction extends Action {
 		this.delayed = true;
 		this.checker = props.checker;
 	}
+	static generate(props: Omit<DelayedAction, ActionMethods>) {
+		const newAction = new DelayedAction(props);
+		// assigns funcs to action
+		newAction.getActionFuncs(newAction);
+		return newAction;
+	}
 }
 
-const goForward = new Action({
+const goForward = Action.generate({
 	title: 'go forward',
 	description: 'move to the next location',
 	forTags: [ 'explore' ],
 	forTypes: [ 'all' ],
-	func: funcs.goForwardFuncs,
 	type: [ 'dynamic' ],
 	repeats: Infinity
 });
-const goBackward = new Action({
+const goBackward = Action.generate({
 	title: 'go backward',
 	description: 'move to the previous location',
 	forTags: [ 'explore' ],
 	forTypes: [ 'all' ],
-	func: funcs.goBackwardFuncs,
 	type: [ 'dynamic' ],
 	repeats: Infinity
 });
-const buildShelter = new Action({
+const buildShelter = Action.generate({
 	title: 'build a shleter',
 	description: 'build a shelter, which slighly protects you from threats',
 	forTags: [ 'all' ],
 	forTypes: [ 'large' ],
-	func: funcs.buildShelterFuncs,
 	type: [ 'static' ],
 	repeats: 1
 });
-const buildRaft = new Action({
+const buildRaft = Action.generate({
 	title: 'build raft',
 	description: 'build a raft, which is used to escape from an island',
 	forTags: [ 'coastal' ],
 	forTypes: [ 'win condition' ],
-	func: funcs.buildRaftFuncs,
 	type: [ 'static' ],
 	repeats: 1
 });
 
-const winWithRaft = new DelayedAction({
+const winWithRaft = DelayedAction.generate({
 	title: 'win with a raft',
 	description: "player built a raft and now needs to escape on it, don't forget to gather resources!",
 	forTags: [ 'coastal' ],
 	forTypes: [ 'win condition' ],
-	func: funcs.winWithRaftFuncs,
 	type: [ 'static' ],
 	repeats: 1,
 	waitFor: [ 'build raft' ],
 	checker: winWithRaftChecker
 });
 
-const collectItems = new Action({
-	title: 'collect common items',
+const collectItems = Action.generate({
+	title: 'collect items',
 	description: 'function created to perform the collection of common items in the area',
 	forTags: [ 'all' ],
 	forTypes: [ 'all' ],
-	func: funcs.collectItemsFuncs,
 	type: [ 'static' ],
 	repeats: Infinity
 });
@@ -105,3 +122,5 @@ const collectItems = new Action({
 const actionList: Action[] = [ goForward, goBackward, buildShelter, buildRaft, winWithRaft, collectItems ];
 export default actionList;
 export { Action, DelayedAction };
+
+type Props = Omit<Action, ActionMethods>;

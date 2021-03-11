@@ -1,0 +1,108 @@
+class Action
+
+    properties:
+        -title: ActionTitle
+        -description: string
+        -forTags: Tags[]
+        -forTypes: LocationType
+        -func: Func
+        -type: ActionType[]
+        -repeats: number
+        -delayed: boolean
+
+    methods:
+        -runUtils(stage: Stage)
+
+
+class DelayedAciton extends Action
+
+    properties:
+        -super()
+        -waitFor: Action['title'][]
+        -checker: (stage: Stage) => void
+
+
+class ActionFuncs
+
+    properties:
+        -props: FuncProps
+        -action: () => Stage
+        -title: () => ActionTitle
+
+    static: 
+        -generate(props: Omit<ActionFuncs, ActionFuncsMethods>)
+
+
+class Level
+
+    properies:
+        -map: GameMap
+        -allLocations: LocationCollectionProps;
+        -graph: Map<number, MapLocations>;
+        -constructions: Construction[];
+        -tags: Tag[];
+        -allActions: AllAction;
+
+    static:
+        -generate(map: GameMap = dessertedIsland, actions: Action[] = actionList): Level
+    
+
+class LocationsCollection
+
+    properties:
+        -all: AllLoc[]
+        -initialLocation?: LocInit
+        -winConditionLocations?: LocWC[]
+        -nonFixedLocations?: (LocSmall | LocLarge | LocMedium)[]
+
+    methods:
+        -setInitialLocations(locations: AllLoc[] = this.all)
+        -setWCLocations(locations: AllLoc[] = this.all)
+        -setNonFixedLocations(locations: AllLoc[] = this.all)
+    
+    static:
+        -setMapLocations(map: GameMap, all: AllLocations['all'])
+        -utilityLocationsSearch(fixed: boolean, type: LocationType, locations: AllLoc[])
+        -generate(map: GameMap, all: AllLocations['all'] = locations)
+
+
+class Player (ignore for now)
+
+
+class Stage
+
+    properies:
+        -currentLocation: MapLocations
+        -allLocations: LocationCollectionProps['all']
+        -allActions: AllAction
+        -dependencyMap?: Map<Action['title'], DelayedAction[]>
+
+    methods:
+        -move(props: Optional<Props>): Stage
+        -locationGetAction()
+        -updateAllActions(action: Action | DelayedAction)
+    
+    static:
+        -generate(props: Props)
+
+
+class CommonItem
+    properies:
+        -title: string
+        -type: 'common'
+
+
+class UncommonItem
+    properies:
+        -title: string
+        -type: 'uncommon'
+
+
+class Construction
+    
+    properties:
+        -title: string;
+        -type: ConstructionType[];
+        -forLocations: (LocationTitle | 'all')[];
+
+
