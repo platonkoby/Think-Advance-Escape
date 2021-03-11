@@ -1,3 +1,5 @@
+// not yer implemented, ignore
+
 import { ItemInterface, Stats, Status } from '../types/Player';
 
 class Player {

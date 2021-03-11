@@ -1,5 +1,6 @@
 import { Link, Route, Redirect } from 'react-router-dom';
 
+// For now, ignore this comoponent, at this stage it is created, but not really used
 function Start({ startGame }: Props) {
 	return (
 		<div>

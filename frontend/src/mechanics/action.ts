@@ -26,6 +26,7 @@ class Action {
 		this.delayed = false;
 	}
 
+	// runUtils runs the updated for the action and some of the fucntion which depend on this action
 	runUtils(stage: Stage) {
 		this.repeats = this.repeats - 1;
 		stage.updateAllActions(this);

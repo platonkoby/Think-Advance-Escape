@@ -9,6 +9,7 @@ export class UncommonItem {
 
 const vine = new UncommonItem('vine');
 
+//lists of items for different locations
 const jungle: UncommonItem[] = [ vine ];
 const beach: UncommonItem[] = [];
 const cave: UncommonItem[] = [];

@@ -8,17 +8,18 @@ const INITIAL_PROPS = {
 	stage: undefined
 };
 
+// later, maybe removed and subtituted with actions having unique action, title methods
 export class ActionFuncs {
 	props: FuncProps;
 	action: () => Stage;
 	title: () => ActionTitle;
-	constructor({ props = INITIAL_PROPS, action, title }: ActionFuncs) {
+	constructor({ props = INITIAL_PROPS, action, title }: Props) {
 		this.props = props;
 		this.action = action;
 		this.title = title;
 	}
 
-	static generate(props: Omit<ActionFuncs, ActionFuncsMethods>) {
+	static generate(props: Props) {
 		const action = new ActionFuncs(props);
 		return action;
 	}
@@ -110,6 +111,7 @@ const collectItemsFuncs = ActionFuncs.generate({
 		return stage.move({});
 	},
 	title: () => {
+		// creates a string to show the user which items can be collected in this location
 		const buttonString = utilGetItemsString(collectItemsFuncs);
 		return { btn: buttonString, effect: 'collected items' };
 	}
@@ -125,3 +127,5 @@ const actionFuncs = {
 };
 
 export default actionFuncs;
+
+type Props = Omit<ActionFuncs, ActionFuncsMethods>;

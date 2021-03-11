@@ -2,6 +2,8 @@ import { MapLocations } from '../types/Maps';
 import { ActionFuncs } from './actionFuncs';
 import { getNeighbour } from '../types/Utils';
 
+//Read Utils
+// funciton which gets the neighbours of the location on the graph
 export const getGraphNeighbour = ({ graph, currentPos, direction }: getNeighbour): MapLocations => {
 	let neighbourLoc: MapLocations | undefined;
 	graph.forEach((pos) => {
@@ -14,6 +16,7 @@ export const getGraphNeighbour = ({ graph, currentPos, direction }: getNeighbour
 	return neighbourLoc;
 };
 
+// function which is used in action.actionFuncs.title.btn to create a button title for the action
 export const utilGetItemsString = (currentPos: ActionFuncs): string => {
 	if (!currentPos.props.currentPos) throw new Error();
 	const { commonItems, uncommonItems } = currentPos.props.currentPos.location.items;

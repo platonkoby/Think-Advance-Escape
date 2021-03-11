@@ -10,6 +10,7 @@ export class CommonItem {
 const flexibleBranch = new CommonItem('flexible branch');
 const wideLeaf = new CommonItem('wide leaf');
 
+//liststs of items for different locations
 const jungle: CommonItem[] = [ flexibleBranch, wideLeaf ];
 const beach: CommonItem[] = [];
 const cave: CommonItem[] = [];

@@ -2,12 +2,15 @@ import { MapLocations } from '../types/Maps';
 import { AllAction } from '../types/Level';
 import { LocationCollectionProps } from '../types/LocationTypes';
 import { Action, DelayedAction } from './action';
-import { Optional, StageMethods } from '../types/Stage';
+import { StageMethods } from '../types/Stage';
+import { Optional } from '../types/Utils';
 
+// read Stage
 class Stage {
 	currentLocation: MapLocations;
 	allLocations: LocationCollectionProps['all'];
 	allActions: AllAction;
+	//dependecy map is updated if initalActions change
 	dependencyMap?: Map<Action['title'], DelayedAction[]>;
 
 	constructor({ currentLocation, allActions, allLocations, dependencyMap }: Props) {
@@ -18,12 +21,16 @@ class Stage {
 	}
 
 	move(props: Optional<Props>): Stage {
-		this.locationGetAction();
+		// creates a new stage with upates
 		return Stage.generate({ ...this, ...props });
 	}
 
 	locationGetAction() {
 		const locations = this.allLocations.map((location) => {
+			// actions are assigned to locations, depending on location's tags and type
+			// if action will have one or more of the location's tags in its action.forTags, it will become a candidate
+			// action candidates are are checked if they are for the right type, if yes, they are assigned to the location
+			// if action is all in type or tags, it skips the check step
 			location.actions = this.allActions.initialActions.filter((action) => {
 				if (action.forTags.includes('all')) return true;
 				if (action.repeats < 1) return false;
@@ -47,6 +54,7 @@ class Stage {
 	}
 
 	updateAllActions(action: Action | DelayedAction) {
+		// actions are updated, on every stage, if chosen action has dependencies
 		if (!this.dependencyMap) throw new Error();
 		let deps = this.dependencyMap.get(action.title);
 		if (deps) {
@@ -61,6 +69,7 @@ class Stage {
 	static generate(props: Props) {
 		const dependencyMap = buildDependencyMap(props.allActions);
 		const stage = new Stage({ ...props, dependencyMap });
+		// this is called here, because the values of the current stage are used
 		stage.locationGetAction();
 		console.log(stage);
 		return stage;
