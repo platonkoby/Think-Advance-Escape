@@ -1,0 +1,21 @@
+New:
+
+    = Player added
+
+Updates:
+
+    - minor CommonItem
+        1) new items added
+
+    - minor UncommonItem
+        1) new items added
+
+    - minor ActionFuncs
+        1) player added to actionFuncs.props
+        
+    - minor Utils
+        1) added, utilRandomNumber()
+        2) added, getUtilRandomNumberProps()
+
+    - minor Game
+        1) now runcs player.increaseHunger on stage update (handleClick)

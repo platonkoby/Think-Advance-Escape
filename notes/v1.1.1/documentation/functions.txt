@@ -1,0 +1,16 @@
+The functions are defined with the classes where they are created, or where they are primarly used in
+
+- randomiseLocations - is used and created in Level
+- generateGraph - is used and created in Level
+- getConstructions - is used and created in Level
+- getAllTags - is used and created in Level
+- getAllActions - is used and created in Level
+
+- buildDependecyMap - is used and created in Stage
+
+- getGraphNeighbour - is created in uility
+- utilGetItemsString - is created in uility
+
+-startGame - is used in Game and created in App
+
+-handleClick - is used and created in Game

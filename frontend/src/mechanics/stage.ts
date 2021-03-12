@@ -66,9 +66,7 @@ class Stage {
 	static generate(props: Props) {
 		const dependencyMap = buildDependencyMap(props.allActions);
 		const stage = new Stage({ ...props, dependencyMap });
-
 		stage.locationGetAction();
-		console.log(stage);
 		return stage;
 	}
 }

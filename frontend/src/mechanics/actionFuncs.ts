@@ -6,7 +6,8 @@ import { DelayedAction, Action } from './action';
 
 const [ shelter, raft ] = constructions;
 
-const INITIAL_PROPS = {
+const INITIAL_PROPS: FuncProps = {
+	player: undefined,
 	level: undefined,
 	currentPos: undefined,
 	stage: undefined,
@@ -125,8 +126,11 @@ const collectItemsFuncs = ActionFuncs.generate({
 	forAction: 'collect items',
 	props: INITIAL_PROPS,
 	action: () => {
-		const { level, currentPos, stage, action } = collectItemsFuncs.props;
-		if (!level || !currentPos || !stage || !action) throw new Error();
+		const { level, currentPos, stage, action, player } = collectItemsFuncs.props;
+		if (!level || !currentPos || !stage || !action || !player) throw new Error();
+		const commonItems = currentPos.location.items.commonItems;
+		const uncommonItems = currentPos.location.items.uncommonItems;
+		player.collectItems([ commonItems, uncommonItems ]);
 		return stage.move({});
 	},
 	title: () => {

@@ -1,0 +1,11 @@
+class UncommonItem
+    properies:
+        -title: string
+        -type: 'uncommon'
+
+- title, the name of the item
+
+- type, the type of the item
+
+
+arrays with uncommon items for different locations are created here

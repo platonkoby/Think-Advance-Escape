@@ -6,18 +6,27 @@ import { ActionFuncs as Func } from './mechanics/actionFuncs';
 import Stage from './mechanics/stage';
 import { Action, DelayedAction } from './mechanics/action';
 
-function Game({ loading, level, startGame }: Props) {
+function Game({ loading, level, startGame, player }: Props) {
 	const [ currentStage, setCurrentStage ] = useState<Stage | undefined>();
 	const [ currentEffect, setCurrentEffect ] = useState('');
 
 	const handleClick = (actionFuncs: Func, action: Action | DelayedAction) => {
 		let stage = actionFuncs.action();
-		if (currentStage) {
+		if (currentStage && player) {
 			action.runUtils(stage);
+			player.increaseHunger();
 		}
 		setCurrentStage(stage);
 		setCurrentEffect(actionFuncs.title().effect);
 	};
+	useEffect(
+		() => {
+			console.log(currentStage);
+			console.log(player);
+			console.log(level);
+		},
+		[ currentStage, player, level ]
+	);
 	useEffect(() => {
 		startGame();
 	}, []);
@@ -55,6 +64,7 @@ function Game({ loading, level, startGame }: Props) {
 						if (action.repeats === 0 || !action.funcs) return null;
 						const actionFuncs = action.funcs;
 						actionFuncs.props = {
+							player,
 							action,
 							level,
 							currentPos: currentStage.currentLocation,

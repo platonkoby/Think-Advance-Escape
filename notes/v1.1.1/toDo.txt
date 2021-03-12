@@ -1,0 +1,4 @@
++ 1) create Player class with health and hunger
++ 2) create items for player
++ 3) make it so, as items are collected, they are added to items
++ 4) method which reduces player hunger by n every stage

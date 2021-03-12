@@ -1,6 +1,7 @@
 import { MapLocations } from '../types/Maps';
 import { ActionFuncs } from './actionFuncs';
 import { getNeighbour } from '../types/Utils';
+import { AllItemTypeNames } from '../types/Items';
 
 export const getGraphNeighbour = ({ graph, currentPos, direction }: getNeighbour): MapLocations => {
 	let neighbourLoc: MapLocations | undefined;
@@ -22,4 +23,27 @@ export const utilGetItemsString = (currentPos: ActionFuncs): string => {
 	uncommonItems.forEach((item) => item && string.push(`${item.title}, `));
 	if (string.length === 1) return 'disable';
 	return string.reduce((a, b) => a + b);
+};
+
+export const utilRandomNumber = (to: number, from: number = 0): number => {
+	if (from === 0) {
+		let n = Math.floor(Math.random() * (to + 1));
+		console.log(n);
+		return n;
+	} else {
+		return Math.floor(Math.random() * (to - from + 1)) + from;
+	}
+};
+
+export const getUtilRandomNumberProps = (type: AllItemTypeNames): [number, number] => {
+	switch (type) {
+		case 'common':
+			return [ 20, 10 ];
+
+		case 'uncommon':
+			return [ 10, 0 ];
+		default:
+			throw new Error(`${type} is not a valid item type`);
+			break;
+	}
 };

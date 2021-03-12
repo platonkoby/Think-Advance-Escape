@@ -9,20 +9,22 @@ export class UncommonItem {
 
 const vine = new UncommonItem('vine');
 
+const plasticScrap = new UncommonItem('plastic scrap');
+
+const brokenStalagmite = new UncommonItem('broken stalagmite');
+
 const jungle: UncommonItem[] = [ vine ];
-const beach: UncommonItem[] = [];
-const cave: UncommonItem[] = [];
+const beach: UncommonItem[] = [ plasticScrap ];
+const cave: UncommonItem[] = [ brokenStalagmite ];
 const rockyHills: UncommonItem[] = [];
 const whiteSands: UncommonItem[] = [];
-const test: UncommonItem[] = [];
 
 const uncommonItems = {
 	jungle,
 	beach,
 	cave,
 	rockyHills,
-	whiteSands,
-	test
+	whiteSands
 };
 
 export default uncommonItems;

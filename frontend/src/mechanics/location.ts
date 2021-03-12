@@ -74,17 +74,8 @@ let whiteSands: LocSmall = {
 	fixed: false,
 	items: { commonItems: commonItems.whiteSands, uncommonItems: uncommonItems.whiteSands }
 };
-let test: LocSmall = {
-	title: 'test',
-	description: 'test',
-	type: 'small',
-	tags: [ 'dark' ],
-	actions: [],
-	fixed: false,
-	items: { commonItems: commonItems.test, uncommonItems: uncommonItems.test }
-};
 
-const locations = [ cave, rockyHills, jungle, whiteSands, beach, test ];
+const locations = [ cave, rockyHills, jungle, whiteSands, beach ];
 
 class LocationsCollection {
 	all: AllLoc[];

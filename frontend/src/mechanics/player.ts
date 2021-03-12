@@ -1,30 +1,57 @@
-// not yet implemented, ignore
+import { AllItemTypes, Items } from '../types/Items';
+import { PlayerMethods, PlayerItems } from '../types/Player';
+import { getUtilRandomNumberProps, utilRandomNumber } from './utils';
 
-import { ItemInterface, Stats, Status } from '../types/Player';
+const PLAYER_DEFAULT: Props = {
+	HP: 100,
+	hunger: 0,
+	items: []
+};
 
 class Player {
-	stats: Stats;
-	status: Status;
-	items: ItemInterface[];
+	HP: number;
+	hunger: number;
+	items: PlayerItems[];
 
-	constructor(stats: Stats, items: ItemInterface[], status: Status) {
-		this.stats = stats;
+	constructor(props: Props) {
+		const { HP, hunger, items } = props;
+		this.HP = HP;
+		this.hunger = hunger;
 		this.items = items;
-		this.status = status;
 	}
 
-	equip(item: ItemInterface) {
+	updateItem(itemTitle: string) {
+		const item = this.items.filter((one) => one.title === itemTitle)[0];
+		this.items = this.items.filter((one) => one.title !== itemTitle);
+		const [ to, from ] = getUtilRandomNumberProps(item.type);
+		item.amount += utilRandomNumber(to, from);
 		this.items.push(item);
 	}
 
-	static generate(): Player {
-		return new Player({ str: 20, agil: 20, int: 20 }, [ { title: 'test' }, { title: 'test2' } ], {
-			illness: null,
-			injuries: null,
-			hunger: 0,
-			thirst: 0
+	increaseHunger() {
+		this.hunger = this.hunger + 10;
+	}
+
+	collectItems(props: AllItemTypes[][]) {
+		props.forEach((items) => {
+			const existingItems = this.items.map((one) => one.title);
+			items.forEach((item) => {
+				if (existingItems.includes(item.title)) {
+					this.updateItem(item.title);
+				} else {
+					const { title, type } = item;
+					const [ to, from ] = getUtilRandomNumberProps(item.type);
+					this.items.push({ title, type, amount: utilRandomNumber(to, from) });
+				}
+			});
 		});
+	}
+
+	static generate(props: Props = PLAYER_DEFAULT) {
+		return new Player(props);
 	}
 }
 
 export default Player;
+
+type Props = Omit<Player, PlayerMethods>;
