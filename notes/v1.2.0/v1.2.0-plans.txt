@@ -1,13 +1,13 @@
 Expected functionality:
 
-    - all locations have common and uncommon items
+    + all locations have common and uncommon items
     - constructions become locations, or rather player can enter constructions
     - add action significance, if action is significant enough, it can move the tiem of
         the day
     - add time to stage, some actions can be done only during certain times of the day
-    - player added
-    - player can collect items to build constructions
-    - player has health and hunger
+    + player added
+    + player can collect items to build constructions
+    + player has health and hunger
         i) eg. with hunger > 50%, player regenerates 10% health each day
     - player can sleep in shelter to skip the night
     - action to open player backpack to see items
@@ -19,7 +19,10 @@ Expected functionality:
 
     
 significant points:
-    1) add player
+    + 1) add player
     2) add time cycle
     3) effects/ passive actions
     4) constructions as locations
+    5) rework action creation?
+        - create some more action classes? so that some have must props
+        - group some of the propsrties?

@@ -1,0 +1,39 @@
+class Player {
+
+    properies: 
+        -HP: number;
+        -hunger: number;
+        -items: PlayerItems[];
+
+    methods:
+        -updateItem(itemTitle: string)
+        -increaseHunger()
+        -collectItems(props: AllItemTypes[][])
+
+    static:
+        =generate(props: Props = PLAYER_DEFAULT)
+
+
+- HP, is the number of health poing player has, currently no use
+
+- hunger, is the amount of hunger points player has (lower better), currently no use
+
+- items, is an array of all the items that player has, as well as their amounts
+
+
+Methods:
+
+    - updateItem, is a method, which updates the amount of an item, by increasing it,
+    this method is used, if a player is collecting items, and they found an item, which
+    they already have
+
+    - increaseHunger, is a method, which increases player's hunger by 10, on every
+    stage update
+
+    - collectItems, is a mtehod, which adds an item to players items
+
+
+Static:
+
+    -generate, is a method, which is used to create a player insctance, this is used,
+    when level is created, to create player with default stats

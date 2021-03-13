@@ -1,0 +1,8 @@
++ 1) add time of the day to stage, initial is morning
++ 2) create a type of action, which moves the time of the day
+    - the ability to change time of the day by more then 1 is unique,
+    to actions, there is no need to have a separate type for this actions
++ 3) create action sleep, with the unique ability to change the time of the 
+    day to morning
++ 4) make it so that action could be played, only at a specific time of the day
++ 5) make it so that some actions have limited daily uses

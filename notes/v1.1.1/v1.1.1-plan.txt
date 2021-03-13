@@ -1,0 +1,9 @@
+In this version, i am planning to start adding a player to the game
+
+In this version, player object will be added, and it will have, health, hunger, items.
+
+Method which runs every time stage changes, and reduces player hunger by 10%, later will be
+changed to reduce hunger, only when time of the day changes
+
+Items when collected are added to Player items
+

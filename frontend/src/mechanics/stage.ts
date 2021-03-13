@@ -1,25 +1,25 @@
 import { MapLocations } from '../types/Maps';
-import { AllAction } from '../types/Level';
 import { LocationCollectionProps } from '../types/LocationTypes';
 import { Action, DelayedAction } from './action';
-import { StageMethods } from '../types/Stage';
+import { StageActions, StageMethods, TimeOfDay } from '../types/Stage';
 import { Optional } from '../types/Utils';
 import { Construction } from '../data/constructions';
 
 class Stage {
 	currentLocation: MapLocations;
 	allLocations: LocationCollectionProps['all'];
-	allActions: AllAction;
-
+	allActions: StageActions;
 	dependencyMap?: Map<Action['title'], DelayedAction[]>;
 	constructions?: Construction[];
+	timeOfTheDay: TimeOfDay;
 
-	constructor({ currentLocation, allActions, allLocations, dependencyMap, constructions }: Props) {
+	constructor({ currentLocation, allActions, allLocations, dependencyMap, constructions, timeOfTheDay }: Props) {
 		this.currentLocation = currentLocation;
 		this.allLocations = allLocations;
 		this.allActions = allActions;
 		this.dependencyMap = dependencyMap;
 		this.constructions = constructions;
+		this.timeOfTheDay = timeOfTheDay;
 	}
 
 	move(props: Optional<Props>): Stage {
@@ -50,6 +50,86 @@ class Stage {
 		this.allLocations = locations;
 	}
 
+	moveTime(action: Action | DelayedAction) {
+		if (action.type.includes('timing')) {
+			this.advance(1);
+		}
+	}
+
+	advance(n: number) {
+		if (n > 0) {
+			const time = this.timeOfTheDay;
+			switch (time) {
+				case 'night':
+					this.timeOfTheDay = 'morning';
+					break;
+				case 'morning':
+					this.timeOfTheDay = 'afternoon';
+					break;
+				case 'afternoon':
+					this.timeOfTheDay = 'evening';
+					break;
+				case 'evening':
+					this.timeOfTheDay = 'night';
+					break;
+				default:
+					throw new Error('invalid time of the day');
+			}
+			this.advance(n - 1);
+		}
+	}
+
+	setWaitingList() {
+		let { initialActions, waitingActions } = this.allActions;
+		// turn into set, to remove repetitions
+		const initialActionsSet = new Set([ ...initialActions, ...waitingActions ]);
+		initialActions = [];
+		initialActionsSet.forEach((action) => initialActions.push(action));
+
+		this.allActions.waitingActions = initialActions.filter((action) => waitingFunel(action, this));
+
+		this.allActions.initialActions = initialActions.filter((action) => initialFunel(action, this));
+
+		// function, returns true for actions, which are meant to be inital
+		function initialFunel(action: Action | DelayedAction, stage: Stage): boolean {
+			let candidate: Action | DelayedAction | null = action;
+
+			if (action.forTime.includes(stage.timeOfTheDay) || action.forTime.includes('all')) {
+				candidate = action;
+			} else {
+				return false;
+			}
+
+			if (action.dailyLimit.current < 1) {
+				return false;
+			}
+
+			return true;
+		}
+		// returns true for actions, which are meant to be waiting
+		function waitingFunel(action: Action | DelayedAction, stage: Stage): boolean {
+			if (
+				(action.forTime.includes(stage.timeOfTheDay) || action.forTime.includes('all')) &&
+				action.dailyLimit.current > 0
+			) {
+				return false;
+			}
+			return true;
+		}
+	}
+
+	resetDailyActions() {
+		if (this.timeOfTheDay !== 'morning') return;
+		let { initialActions, waitingActions } = this.allActions;
+		this.allActions.initialActions = initialActions.map(resetCurrent);
+		this.allActions.waitingActions = waitingActions.map(resetCurrent);
+
+		function resetCurrent(action: Action | DelayedAction) {
+			action.dailyLimit.current += action.dailyLimit.initial;
+			return action;
+		}
+	}
+
 	static updateAllActions(action: Action | DelayedAction, stage: Stage) {
 		if (!stage.dependencyMap) throw new Error();
 		let deps = stage.dependencyMap.get(action.title);
@@ -66,6 +146,8 @@ class Stage {
 	static generate(props: Props) {
 		const dependencyMap = buildDependencyMap(props.allActions);
 		const stage = new Stage({ ...props, dependencyMap });
+		stage.resetDailyActions();
+		stage.setWaitingList();
 		stage.locationGetAction();
 		return stage;
 	}

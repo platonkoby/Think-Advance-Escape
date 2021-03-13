@@ -1,0 +1,11 @@
+In this version, i am going to add time of the day cycles to the Stage,
+as well as the ability of some of the actions to change it.
+
+create action sleep, which will not yet be used, it is made, so that
+when the functionality to enter the shelter is added, player could
+sleep
+
+allow actions be played only during teh time of the day, they are meant to
+be played
+
+make some of the actions usable only a certain amount of times in a day

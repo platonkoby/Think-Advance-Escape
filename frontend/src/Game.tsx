@@ -21,9 +21,10 @@ function Game({ loading, level, startGame, player }: Props) {
 	};
 	useEffect(
 		() => {
-			console.log(currentStage);
-			console.log(player);
-			console.log(level);
+			if (currentStage && player && level) {
+				console.log(currentStage);
+				// console.log(player);
+			}
 		},
 		[ currentStage, player, level ]
 	);
@@ -40,7 +41,12 @@ function Game({ loading, level, startGame, player }: Props) {
 						const { allActions, allLocations } = level;
 
 						setCurrentStage(
-							Stage.generate({ currentLocation: pos, allActions, allLocations: allLocations.all })
+							Stage.generate({
+								currentLocation: pos,
+								allActions: { ...allActions, waitingActions: [] },
+								allLocations: allLocations.all,
+								timeOfTheDay: 'morning'
+							})
 						);
 					}
 				});

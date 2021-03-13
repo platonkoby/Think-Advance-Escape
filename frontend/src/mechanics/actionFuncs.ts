@@ -74,7 +74,7 @@ const goBackwardFuncs = ActionFuncs.generate({
 });
 
 const buildShelterFuncs = ActionFuncs.generate({
-	forAction: 'build a shleter',
+	forAction: 'build a shelter',
 	props: INITIAL_PROPS,
 	action: () => {
 		const { level, currentPos, stage, action } = buildShelterFuncs.props;
@@ -139,13 +139,42 @@ const collectItemsFuncs = ActionFuncs.generate({
 	}
 });
 
+const sleepFuncs = ActionFuncs.generate({
+	forAction: 'sleep',
+	props: INITIAL_PROPS,
+	action: () => {
+		const { level, currentPos, stage, action } = sleepFuncs.props;
+		if (!level || !currentPos || !stage || !action) throw new Error();
+
+		return stage.move({ timeOfTheDay: 'morning' });
+	},
+	title: () => {
+		return { btn: 'sleep', effect: '' };
+	}
+});
+
+const waitNightOverFuncs = ActionFuncs.generate({
+	forAction: 'wait night over',
+	props: INITIAL_PROPS,
+	action: () => {
+		const { level, currentPos, stage, action } = waitNightOverFuncs.props;
+		if (!level || !currentPos || !stage || !action) throw new Error();
+		return stage.move({});
+	},
+	title: () => {
+		return { btn: 'wait night over', effect: 'you have lived through this night!' };
+	}
+});
+
 const actionFuncs = [
 	goForwardFuncs,
 	goBackwardFuncs,
 	buildShelterFuncs,
 	buildRaftFuncs,
 	winWithRaftFuncs,
-	collectItemsFuncs
+	collectItemsFuncs,
+	sleepFuncs,
+	waitNightOverFuncs
 ];
 
 export default actionFuncs;

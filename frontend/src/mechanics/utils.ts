@@ -2,6 +2,7 @@ import { MapLocations } from '../types/Maps';
 import { ActionFuncs } from './actionFuncs';
 import { getNeighbour } from '../types/Utils';
 import { AllItemTypeNames } from '../types/Items';
+import { Action } from './action';
 
 export const getGraphNeighbour = ({ graph, currentPos, direction }: getNeighbour): MapLocations => {
 	let neighbourLoc: MapLocations | undefined;
@@ -28,7 +29,6 @@ export const utilGetItemsString = (currentPos: ActionFuncs): string => {
 export const utilRandomNumber = (to: number, from: number = 0): number => {
 	if (from === 0) {
 		let n = Math.floor(Math.random() * (to + 1));
-		console.log(n);
 		return n;
 	} else {
 		return Math.floor(Math.random() * (to - from + 1)) + from;
@@ -46,4 +46,8 @@ export const getUtilRandomNumberProps = (type: AllItemTypeNames): [number, numbe
 			throw new Error(`${type} is not a valid item type`);
 			break;
 	}
+};
+
+export const utilDailyMaximum = (n: number): Action['dailyLimit'] => {
+	return { current: n, initial: n };
 };

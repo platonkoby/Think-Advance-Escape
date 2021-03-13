@@ -1,0 +1,33 @@
+
+
+
+Updates:
+
+    - MAJOR Stage
+        1) allActions, now has a third group, waiting acitons
+        2) new property - timeOfTheDay  
+        3) new method - moveTime 
+        4) new method - advance 
+        5) new method - setWaitingList 
+        6) new method - resetDailyActins;
+        7) generate now also reset's daily actions and sets the waiting list
+
+    - MAJOR Actions
+        1) new property - forTime
+        2) new property - dailyLimit
+        3) runUtils, now:
+            - reduces the dailyLimit count'
+            - runs stage.moveTime()
+            - runs stage.setWaitingList()
+
+     - minor Util
+        1) utilDailyMaximum added
+
+    - minor ActionFuncs
+        1) new actionFuncs - sleepFuncs
+        2) new actionFuncs - waitNightOverFuncs
+
+    - minor ActionCheckers
+        1) new actionChecker - shelterIsBuil
+
+    

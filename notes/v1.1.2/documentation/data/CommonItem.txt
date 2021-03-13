@@ -1,0 +1,11 @@
+class CommonItem
+    properies:
+        -title: string
+        -type: 'common'
+
+- title, the name of a common item
+
+- type, the type of an item
+
+
+arrays with common items for different locations are created here
