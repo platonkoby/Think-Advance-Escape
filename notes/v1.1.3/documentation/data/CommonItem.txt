@@ -1,0 +1,13 @@
+class CommonItem
+    properies:
+        -title: string
+        -type: 'common'
+        -uses: ItemUses
+
+- title, the name of a common item
+
+- type, the type of an item
+
+- uses, is an array of strings, representing the item usage, eg, 'build', 'weapon'
+
+arrays with common items for different locations are created here

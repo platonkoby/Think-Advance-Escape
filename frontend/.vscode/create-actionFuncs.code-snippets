@@ -1,0 +1,37 @@
+{
+	// Place your frontend workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"Create actionFuncs": {
+		"scope": "typescript",
+		"prefix": "afuncs",
+		"description": "creates a template for actionFuncs",
+		"body": [
+			"const ${1:}Funcs = ActionFuncs.generate({",
+				"forAction: ${2:},",
+				"props: INITIAL_PROPS,",
+				"action: () => {",
+					"const { level, currentPos, stage, action, player } = ${1:}Funcs.props;",
+					"if (!level || !currentPos || !stage || !action || !player) throw new Error();",
+					"return stage.move({});",
+				"},",
+				"title: () => {",
+					"return { btn: '', effect: '' };",
+				"}",
+			"})"
+		]
+	}
+}

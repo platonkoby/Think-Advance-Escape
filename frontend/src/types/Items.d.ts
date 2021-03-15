@@ -9,3 +9,13 @@ export interface Items {
 	commonItems: CommonItem[];
 	uncommonItems: UncommonItem[];
 }
+
+export type UncommonItemName = 'broken stalagmite' | 'plastic scrap' | 'vine';
+export type CommonItemName = 'dead coral' | 'rock' | 'shell' | 'pebble' | 'wide leaf' | 'flexible branch';
+
+export type AllItemNames = UncommonItemName | CommonItemName;
+
+export type AllItems = (UncommonItem | CommonItem)[];
+
+export type ItemUse = 'build' | 'weapon' | 'tool part' | 'throw';
+export type ItemUses = ItemUse[];

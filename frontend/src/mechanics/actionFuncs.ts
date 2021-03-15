@@ -1,8 +1,10 @@
 import Stage from './stage';
-import { getGraphNeighbour, utilGetItemsString } from './utils';
+import { getGraphNeighbour, utilGetItemsString, utilItemComparison } from './utils';
 import { FuncProps, ActionTitle, ActionFuncsMethods } from '../types/ActionFuncs';
-import constructions from '../data/constructions';
+import constructions, { Construction } from '../data/constructions';
 import { DelayedAction, Action } from './action';
+import { PlayerItems } from '../types/Player';
+
 
 const [ shelter, raft ] = constructions;
 
@@ -24,6 +26,56 @@ export class ActionFuncs {
 		this.action = action;
 		this.title = title;
 		this.forAction = forAction;
+	}
+
+	static constructionAction (props: FuncProps, constructionName: Construction['title'], construction: Construction) {
+		const { level, currentPos, stage, action, player } = props;
+		if (!stage || !currentPos || !level || !action || !player) throw new Error();
+
+		let playerItems: PlayerItems[] = player.items;
+		const levelShelter = level.constructions.find((constr) => constr.title === constructionName);
+		if (levelShelter) {
+			const checker = utilItemComparison(playerItems, levelShelter.requirements);
+			//setting player items
+				//checking if there was enough of every item
+				if(checker.filter((arr) => arr.includes(false)).length === 0){
+					const updates = checker.map((arr) => arr.filter((item, index) => index === 1)).flat();
+					player.updateItem(updates as PlayerItems[])
+				}
+			//getting the items which need to be collected
+			const constructionRequirements = checker.filter((arr) => arr[0] === false).map((arr) => arr[2]);
+			props.changes = constructionRequirements;
+			
+			
+			// if construction wasn't built
+			if (constructionRequirements.length > 0) {
+				action.saveRepeats();
+				action.type.push('skip');
+				return {stage: stage.move({}), props};
+			}
+		}
+		if (!stage.constructions) {
+			return {stage: stage.move({ constructions: [ construction ] }), props};
+		}
+		
+		return {stage: stage.move({ constructions: [ ...stage.constructions, construction ] }), props};
+	}
+
+	static constructionEffect( defaultEffect: string, props: FuncProps): string {
+		if (props.changes) {
+			const constructionRequirements = props.changes;
+
+			if (constructionRequirements.length > 0) {
+				const effectsArr: string[] = [ 'You need' ];
+
+				constructionRequirements.forEach((item: PlayerItems) =>
+					effectsArr.push(`${item.title} - ${item.amount} `)
+				);
+				return effectsArr.join(', ');
+			}
+		}
+
+		return defaultEffect
 	}
 
 	static generate(props: Props) {
@@ -77,16 +129,14 @@ const buildShelterFuncs = ActionFuncs.generate({
 	forAction: 'build a shelter',
 	props: INITIAL_PROPS,
 	action: () => {
-		const { level, currentPos, stage, action } = buildShelterFuncs.props;
-		if (!stage || !currentPos || !level || !action) throw new Error();
-		if (!stage.constructions) {
-			return stage.move({ constructions: [ shelter ] });
-		}
-
-		return stage.move({ constructions: [ ...stage.constructions, shelter ] });
+		const {stage, props} = ActionFuncs.constructionAction(buildShelterFuncs.props, 'standard shelter', shelter);
+		buildShelterFuncs.props = props;
+		return stage;
 	},
 	title: () => {
-		return { btn: 'build a shelter', effect: 'standart shelter built!' };
+		let effect: string = 'standard shelter built!';
+		effect = ActionFuncs.constructionEffect(effect, buildShelterFuncs.props)
+		return { btn: 'build a shelter', effect };
 	}
 });
 
@@ -94,18 +144,17 @@ const buildRaftFuncs = ActionFuncs.generate({
 	forAction: 'build raft',
 	props: INITIAL_PROPS,
 	action: () => {
-		const { level, currentPos, stage, action } = buildRaftFuncs.props;
-		if (!level || !currentPos || !stage || !action) throw new Error();
-		if (!stage.constructions) {
-			return stage.move({ constructions: [ raft ] });
-		}
-		return stage.move({ constructions: [ ...stage.constructions, raft ] });
+		const {stage, props} = ActionFuncs.constructionAction(buildRaftFuncs.props, 'raft', raft);
+		buildRaftFuncs.props = props;
+		return stage;
 	},
 	title: () => {
 		if (!buildRaftFuncs.props.level) throw new Error('Something is wrong with the level map');
+		let effect = `Escape Raft Built! You can now leave the ${buildRaftFuncs.props.level.map.title}`;
+		effect = ActionFuncs.constructionEffect(effect, buildRaftFuncs.props)
 		return {
 			btn: 'build an escape raft',
-			effect: `Escape Raft Built! You can now leave the ${buildRaftFuncs.props.level.map}`
+			effect: effect
 		};
 	}
 });
@@ -119,9 +168,10 @@ const winWithRaftFuncs = ActionFuncs.generate({
 	},
 	title: () => {
 		if (!buildRaftFuncs.props.level) throw new Error('Something is wrong with the level map');
-		return { btn: 'Escape', effect: `You have successfully escaped the ${buildRaftFuncs.props.level.map}` };
+		return { btn: 'Escape', effect: `You have successfully escaped the ${buildRaftFuncs.props.level.map.title}!` };
 	}
 });
+
 const collectItemsFuncs = ActionFuncs.generate({
 	forAction: 'collect items',
 	props: INITIAL_PROPS,
@@ -152,7 +202,6 @@ const sleepFuncs = ActionFuncs.generate({
 		return { btn: 'sleep', effect: '' };
 	}
 });
-
 const waitNightOverFuncs = ActionFuncs.generate({
 	forAction: 'wait night over',
 	props: INITIAL_PROPS,
@@ -165,6 +214,20 @@ const waitNightOverFuncs = ActionFuncs.generate({
 		return { btn: 'wait night over', effect: 'you have lived through this night!' };
 	}
 });
+const skipTimeFuncs = ActionFuncs.generate({
+	forAction: 'skip time',
+	props: INITIAL_PROPS,
+	action: () => {
+		const { level, currentPos, stage, action, player } = skipTimeFuncs.props;
+		if (!level || !currentPos || !stage || !action || !player) throw new Error();
+		return stage.move({});
+	},
+	title: () => {
+		return { btn: 'skip time', effect: 'You have done nothing for several hours...' };
+	}
+})
+
+
 
 const actionFuncs = [
 	goForwardFuncs,
@@ -174,7 +237,8 @@ const actionFuncs = [
 	winWithRaftFuncs,
 	collectItemsFuncs,
 	sleepFuncs,
-	waitNightOverFuncs
+	waitNightOverFuncs,
+	skipTimeFuncs
 ];
 
 export default actionFuncs;

@@ -1,0 +1,9 @@
++ 1) make it so constructions could be built when the player has
+    enough resources 
++ 2) if the player does not have enough resources for construction, player is going to see how much is left
+3) add entered to construction
+4) add a list of actions for construction
+5) solution 1: give construction a list of action names, using which level is going to add those actions into delayedActions,
+    which are going to be activated by enter {construction}, which itself is going to be activated by, build shelter
+
+

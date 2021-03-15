@@ -10,6 +10,7 @@ export interface FuncProps {
 	currentPos: MapLocations | undefined;
 	stage: Stage | undefined;
 	action: Action | DelayedAction | undefined;
+	changes?: any;
 }
 
 export interface ActionTitle {

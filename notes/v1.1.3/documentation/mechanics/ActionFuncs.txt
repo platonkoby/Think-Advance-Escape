@@ -1,0 +1,30 @@
+ActionFuncs is a class for actionFuncs, which are used by actions in their func property
+
+class ActionFuncs
+
+    properties:
+        -forAction: Action['title'] | DelayedAction['title']
+        -props: FuncProps
+        -action: () => Stage
+        -title: () => ActionTitle
+
+    static: 
+        -generate(props: Omit<ActionFuncs, ActionFuncsMethods>)
+        -constructionAction (props: FuncProps, constructionName: Construction['title'], construction: Construction)
+        -constructionEffect( defaultEffect: string, props: FuncProps): string
+
+
+-forAction, is a property, which is set to the title of the action, to which this actionFuncs belongs
+
+- props has 3 properties - level, currentPos and stage which are used by action and title
+
+- action, is a function which serves as a main functionality for an action obj. Meaning that, when the button is pressed, this function
+is called to create changes to Stage
+
+- title, is a function which is responsible to create a title for the button which represents the action obj. Also title return effect string,
+which is displayed to the used to show what action() did
+ 
+Static:
+
+    -constructionAction, a static method, which returns the action of actionFuncs for any construction
+    -constructionEffect, a static method, which returns the effect of actionFuncs for any construction

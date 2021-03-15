@@ -1,8 +1,11 @@
 import { MapLocations } from '../types/Maps';
 import { ActionFuncs } from './actionFuncs';
-import { getNeighbour } from '../types/Utils';
+import { getNeighbour, utilItemComparisonProps } from '../types/Utils';
 import { AllItemTypeNames } from '../types/Items';
 import { Action } from './action';
+import Player from './player';
+import { Construction } from '../data/constructions';
+
 
 export const getGraphNeighbour = ({ graph, currentPos, direction }: getNeighbour): MapLocations => {
 	let neighbourLoc: MapLocations | undefined;
@@ -19,11 +22,13 @@ export const getGraphNeighbour = ({ graph, currentPos, direction }: getNeighbour
 export const utilGetItemsString = (currentPos: ActionFuncs): string => {
 	if (!currentPos.props.currentPos) throw new Error();
 	const { commonItems, uncommonItems } = currentPos.props.currentPos.location.items;
-	let string = [ 'collect: ' ];
-	commonItems.forEach((item) => item && string.push(`${item.title}, `));
-	uncommonItems.forEach((item) => item && string.push(`${item.title}, `));
-	if (string.length === 1) return 'disable';
-	return string.reduce((a, b) => a + b);
+	let stringArr: string[] = [];
+	let string: string = 'Collect - ';
+	commonItems.forEach((item) => item && stringArr.push(`${item.title}`));
+	uncommonItems.forEach((item) => item && stringArr.push(`${item.title}`));
+	if (stringArr.length === 0) return 'disable';
+	string = string.concat(stringArr.join(', '));
+	return string;
 };
 
 export const utilRandomNumber = (to: number, from: number = 0): number => {
@@ -50,4 +55,51 @@ export const getUtilRandomNumberProps = (type: AllItemTypeNames): [number, numbe
 
 export const utilDailyMaximum = (n: number): Action['dailyLimit'] => {
 	return { current: n, initial: n };
+};
+export const utilShuffleArray = (arr: any[]): any[] => {
+	const shuffledArr: any[] = [];
+	let i = 0;
+	let check = 0;
+	recursive();
+	return shuffledArr;
+
+	function recursive() {
+		check++;
+		if (check > 2000) throw new Error('Infinite Loop');
+		if (shuffledArr.length < arr.length) {
+			do {
+				if (check > 2000) throw new Error('Infinite Loop, do while');
+				check++;
+				i = utilRandomNumber(arr.length - 1);
+			} while (shuffledArr.includes(arr[i]));
+			shuffledArr.push(arr[i]);
+			recursive();
+		}
+		return;
+	}
+};
+
+export const utilItemComparison = (got: Player['items'], needed: Construction['requirements']) => {
+	if(!needed) throw new Error()
+	
+	const check: utilItemComparisonProps  = needed.map((item) => {
+		const currentItem = got.find((playerItem) => item.title === playerItem.title);
+		//returns if user doesn't have the needed item
+		if (!currentItem) return [false, {}, { title: item.title, amount: item.amount, type: item.type } ];
+		//returns if user doesn't have enough of the needed item
+		if (currentItem.amount - item.amount < 0) {
+			return [
+				false,
+				{},
+				{ title: item.title, amount: item.amount - currentItem.amount, type: item.type  }
+			];
+		}
+		//returns if user has the right amount of the right item
+		return [
+			true,
+			{ title: currentItem.title, amount: 0 - item.amount, type: currentItem.type  },
+			{ title: item.title, amount: 0, type: item.type  }
+		];
+	});
+	return check;
 };

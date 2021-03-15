@@ -1,6 +1,6 @@
-export type ActionMethods = 'runUtils' | 'delayed' | 'getActionFuncs';
+export type ActionMethods = 'runUtils' | 'delayed' | 'getActionFuncs' | 'saveRepeats';
 
-export type ActionType = 'dynamic' | 'static' | 'timing';
+export type ActionType = 'dynamic' | 'static' | 'timing' | 'build' | 'skip';
 
 export type ActionTitle =
 	| 'go forward'
@@ -10,4 +10,5 @@ export type ActionTitle =
 	| 'build a shelter'
 	| 'go backward'
 	| 'sleep'
-	| 'wait night over';
+	| 'wait night over'
+	| 'skip time';

@@ -1,0 +1,69 @@
+class Stage
+
+    properies:
+        -constructions?: Construction[]
+        -currentLocation: MapLocations
+        -allLocations: LocationCollectionProps['all']
+        -allActions: AllAction
+        -dependencyMap?: Map<Action['title'], DelayedAction[]>
+        -timeOfTheDay: TimeOfDay
+
+    methods:
+        -move(props: Optional<Props>): Stage
+        -locationGetAction()
+        -resetDailyActions()
+        -setWaitingList()
+        -advance(n: number)
+        -moveTime(action: Action | DelayedAction)
+        -removeLocationText()
+    
+    static:
+        -updateAllActions(action: Action | DelayedAction, stage: Stage)
+        -generate(props: Props)
+
+
+-construction, is a list of constructions built during this game
+
+- currentLocation, is a location where the user currently is
+
+- allLocations, is a list of all the locations for this game
+
+- allActions, is an object with delayed and initial actions, the prior is used to create dependencyMap, the later
+is used as a pull of actions from which locations choose their current actions
+
+- dependencyMap, is used to monitor actions progression, meaning that it takes inital actions and sets their title
+as keys and as their values, the delayed actions with their titles in wairFor are set
+
+- timeOfDay, is a string, which represent the current stage of the daily cycle - morning, afternoon, evening and night
+
+
+Methods:
+
+    - move, is the place which gets/makes all the changes to the current Stage and creates + returns a new stage,
+    based on the changed current Stage
+
+    - locationGetAction, makes allLocations choose needed actions from initialActions pull
+
+    - resetDailyActions, gives resets the current value of dailyLimit of actions, ran every morning
+
+    - setWaitingList, creates a waiting list, by filtering inital actions and getting out all the values which have,
+    dailyLimit below 1 and which are not available at the current toOfTheDay
+
+    - advance, skips the stages of the day, takes in a number as a parameter, which represents the amount of skipped
+    stages
+
+    -moveTime, check if an action can move the time, and calls advance(1). Currently checks only if has timing in
+    action types, if yes, this means that time can be advanced
+
+    -removeLocationText, removes the text of the location which is represented by currentLocation
+
+   
+
+Static:
+    - updateAllActions, updated allActions, moves values from delayed to initial, so that locations had a new choice
+    -generate, creates a new instance of Stage
+
+Related functions:
+
+- buildDependecyMap(allActions: Stage['allActions']): Stage['dependencyMap'], this function creates a dependencyMap
+for Stage

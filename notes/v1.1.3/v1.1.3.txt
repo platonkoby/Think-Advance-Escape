@@ -1,0 +1,4 @@
+Initially this version consisted of more steps, which i went through in
+v1.1.3-plan. However in my opinion after implementing steps 1 and 2. 
+I decided that, this update needs to split in two, the second part will be
+v1.1.4

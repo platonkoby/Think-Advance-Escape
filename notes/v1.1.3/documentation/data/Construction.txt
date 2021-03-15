@@ -1,0 +1,12 @@
+class Construction
+    
+    properties:
+        -title: string;
+        -type: ConstructionType[];
+        -forLocations: (LocationTitle | 'all')[];
+
+- titile, the name of the construction
+
+- type, the type of the construction
+
+- forLocations, the list of location titles, which can have this construction

@@ -50,13 +50,22 @@ class Stage {
 		this.allLocations = locations;
 	}
 
-	moveTime(action: Action | DelayedAction) {
-		if (action.type.includes('timing')) {
-			this.advance(1);
+	removeLocationText() {
+		if (this.currentLocation.location.text) {
+			const currentLocationTitle = this.currentLocation.location.title;
+			const locationToChange = this.allLocations.find((location) => location.title === currentLocationTitle);
+			if (!locationToChange) throw new Error('incorrect find function in removeLocationText');
+			locationToChange.text = '';
 		}
 	}
 
-	advance(n: number) {
+	moveTime(action: Action | DelayedAction) {
+		if (action.type.includes('timing')) {
+			this.advance();
+		}
+	}
+
+	advance(n: number = 1) {
 		if (n > 0) {
 			const time = this.timeOfTheDay;
 			switch (time) {
@@ -129,6 +138,8 @@ class Stage {
 			return action;
 		}
 	}
+
+
 
 	static updateAllActions(action: Action | DelayedAction, stage: Stage) {
 		if (!stage.dependencyMap) throw new Error();

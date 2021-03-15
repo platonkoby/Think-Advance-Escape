@@ -1,0 +1,17 @@
+1) make it so constructions could be built when the player has
+    enough resources 
+
+
+- constructions to have a recepie
+- think of the way constructions are going to recieve those recepies
+
+
+
+Process: 
+
+- level has all the items list
+- cosntruction method, which will get player, and see if the player has got the items to build this construction
+- effect, which will give the player info on how many more items they need
+- effect, have msg - construction built
+
+

@@ -20,28 +20,35 @@ class Player {
 		this.items = items;
 	}
 
-	updateItem(itemTitle: string) {
-		const item = this.items.filter((one) => one.title === itemTitle)[0];
-		this.items = this.items.filter((one) => one.title !== itemTitle);
-		const [ to, from ] = getUtilRandomNumberProps(item.type);
-		item.amount += utilRandomNumber(to, from);
-		this.items.push(item);
+	updateItem(allItems: PlayerItems[]) {
+		allItems.forEach((newItem) => {
+			const item = this.items.find((one) => one.title === newItem.title);
+		//remove the updating item from the player items
+		this.items = this.items.filter((one) => one.title !== newItem.title);
+		if (item){
+			item.amount += newItem.amount;
+			this.items.push(item);
+		}
+		})
 	}
 
-	increaseHunger() {
-		this.hunger = this.hunger + 10;
+	increaseHunger(n: number = 10) {
+			this.hunger += n;
 	}
 
 	collectItems(props: AllItemTypes[][]) {
 		props.forEach((items) => {
+			
 			const existingItems = this.items.map((one) => one.title);
 			items.forEach((item) => {
+				const { title, type } = item;
+				const [ to, from ] = getUtilRandomNumberProps(item.type);
+				const newItem = { title, type, amount: utilRandomNumber(to, from) };
 				if (existingItems.includes(item.title)) {
-					this.updateItem(item.title);
+					this.updateItem([newItem]);
 				} else {
-					const { title, type } = item;
-					const [ to, from ] = getUtilRandomNumberProps(item.type);
-					this.items.push({ title, type, amount: utilRandomNumber(to, from) });
+					
+					this.items.push(newItem);
 				}
 			});
 		});

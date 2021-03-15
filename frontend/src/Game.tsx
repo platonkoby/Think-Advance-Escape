@@ -6,6 +6,7 @@ import { ActionFuncs as Func } from './mechanics/actionFuncs';
 import Stage from './mechanics/stage';
 import { Action, DelayedAction } from './mechanics/action';
 
+
 function Game({ loading, level, startGame, player }: Props) {
 	const [ currentStage, setCurrentStage ] = useState<Stage | undefined>();
 	const [ currentEffect, setCurrentEffect ] = useState('');
@@ -13,8 +14,7 @@ function Game({ loading, level, startGame, player }: Props) {
 	const handleClick = (actionFuncs: Func, action: Action | DelayedAction) => {
 		let stage = actionFuncs.action();
 		if (currentStage && player) {
-			action.runUtils(stage);
-			player.increaseHunger();
+			action.runUtils(stage, player);
 		}
 		setCurrentStage(stage);
 		setCurrentEffect(actionFuncs.title().effect);
@@ -23,7 +23,7 @@ function Game({ loading, level, startGame, player }: Props) {
 		() => {
 			if (currentStage && player && level) {
 				console.log(currentStage);
-				// console.log(player);
+				console.log(player);
 			}
 		},
 		[ currentStage, player, level ]
@@ -55,18 +55,20 @@ function Game({ loading, level, startGame, player }: Props) {
 		[ level, loading ]
 	);
 	if (level && currentStage) {
+		const {title, text, actions} = currentStage.currentLocation.location;
 		return (
-			<div>
-				<div>
-					<h1>{currentStage.currentLocation.location.title}</h1>
+			<div className='container'>
+				<div className='header'>
+					<h1>{title.charAt(0).toUpperCase() + title.slice(1)}</h1>
 					<p>
-						{currentStage.currentLocation.location.text ? currentStage.currentLocation.location.text : ''}
+						{text ? text : ''}
 					</p>
 					<p>{currentEffect}</p>
 				</div>
-				<h2>You:</h2>
-				<ul>
-					{currentStage.currentLocation.location.actions.map((action) => {
+				<div className="action-container-holder">
+					<h2>You:</h2>
+				<ul className="action-container">
+					{actions.map((action, index) => {
 						if (action.repeats === 0 || !action.funcs) return null;
 						const actionFuncs = action.funcs;
 						actionFuncs.props = {
@@ -92,6 +94,8 @@ function Game({ loading, level, startGame, player }: Props) {
 						);
 					})}
 				</ul>
+				</div>
+				
 			</div>
 		);
 	}

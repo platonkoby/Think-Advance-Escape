@@ -1,0 +1,14 @@
+class UncommonItem
+    properies:
+        -title: string
+        -type: 'uncommon'
+        -uses: ItemUses
+
+- title, the name of the item
+
+- type, the type of the item
+
+- uses, is an array of strings, representing the item usage, eg, 'build', 'weapon'
+
+
+arrays with uncommon items for different locations are created here

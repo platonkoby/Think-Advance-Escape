@@ -1,0 +1,70 @@
+Level, is used to generate an object level, which represents the game. Stage uses level to get its properties.
+Level is never meant to change
+
+class Level
+
+    properies:
+        -map: GameMap
+        -allLocations: LocationCollectionProps;
+        -graph: Map<number, MapLocations>;
+        -constructions: Construction[];
+        -tags: Tag[];
+        -allActions: AllAction;
+        -allItems: AllItems;
+
+    static:
+        -generate(map: GameMap = dessertedIsland, actions: Action[] = actionList): Level
+    
+- map is a name of the map which the level is using, name is frequently used by utility functions, to create
+level props, because the props depend on the map
+
+- allLocations is an object, which has 4 collections of locations.
+    1) all which is all the possible locations, used for this map. This collectin, is passed to Stage
+
+    2) nonFixed, which is an array of nonFixed locations. This collection is used to create a graph of the map
+
+    3) winCondition, which is an array of locations, which allow user to win.
+    This collection is used to create a graph of the map
+
+    4) initialLocatin, which is an array of locations, where the game might begin.
+    This collection is used to create a graph of the map
+
+- graph, is a map of locations, graph represents how the locations are represented in the game in relation, to
+each other, almost like an abstract version of a geographical map
+
+- constructions, is a list of all possible constructions allowed on this map. Currently no use
+
+- tags, is a set of all tags from all locatins, this is used to create allActions collections
+
+- allActions, is an object, which has initialAcitons and delayedActions
+    1) initialActions, is the list of actions, from which Stage creates a pull of actions, for locations to choose
+    from, initaly
+    2) delayedActions is a list of actions, which cannot be used immideately. Stage uses them to create a pull of 
+    delayed actions
+
+- allItems, the list of all the items possible for this level, used to create requirements for constructions
+
+ - static generate, is used to create an instance of Level, this is used in the startGame function at the start of
+the game
+
+
+
+
+Related Functions:
+
+- randomiseLocations(nonFixedLocations, locationNum), is a function which takes in nonFixedLocations and returns
+them in a random order. It's second parameter is the number of locations needed to be returned
+
+- generateGraph(initialLocations, nonFixedLocations, winConditionLocations ), is a function, which takes locations
+and returns a graph of locations which represents the geographical map of the level
+
+- getConstructions(map: GameMap, locations). This function gets the map and locations and returns a list of all 
+the possible constructions which could be built on this map
+
+- getAllTags(locations), takes in a list of locations and returns a list of their tags
+
+- getAllActions(tags, actions), gets a list of tags and actions, and returns a list with actions which can be used,
+with these tags
+
+- getAllItems(locations: AllLoc[]): AllItems - gets the list of locations, and returns a list of all possible 
+items for these locations

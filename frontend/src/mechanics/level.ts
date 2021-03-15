@@ -4,30 +4,36 @@ import constructionsData, { Construction } from '../data/constructions';
 import { MapLocations, GameMap } from '../types/Maps';
 import actionList, { Action, DelayedAction } from './action';
 import { dessertedIsland } from '../data/Maps';
-import { LevelMethods, AllAction } from '../types/Level';
+import { LevelMethods, AllAction, FilterChain, RequirementsByUse } from '../types/Level';
+import { AllItems} from '../types/Items';
+import {  utilShuffleArray } from './utils';
 
 class Level {
-	map: GameMap;
+	map: GameMap; 
+	allActions: AllAction;
 	allLocations: LocationCollectionProps;
+	allItems: AllItems;
 	graph: Map<number, MapLocations>;
 	constructions: Construction[];
 	tags: Tag[];
-	allActions: AllAction;
 
-	constructor({ map, graph, constructions, allLocations, tags, allActions }: Props) {
+	constructor(props: Props) {
+		const { map, graph, constructions, allLocations, tags, allActions, allItems } = props;
 		this.map = map;
 		this.allLocations = allLocations;
 		this.graph = graph;
 		this.constructions = constructions;
 		this.tags = tags;
 		this.allActions = allActions;
+		this.allItems = allItems;
 	}
 
 	static generate(map: GameMap = dessertedIsland, actions: Action[] = actionList): Level {
 		const allLocations = LocationsCollection.generate(map);
 		const { all, winConditionLocations, nonFixedLocations, initialLocation } = allLocations;
+		const allItems = getAllItems(all);
 		if (!winConditionLocations || !nonFixedLocations || !initialLocation) throw new Error();
-		const constructions: Construction[] = getConstructions(map, all);
+		const constructions: Construction[] = getConstructions(map, all, allItems);
 		const graph: Map<number, MapLocations> = generateGraph(
 			winConditionLocations,
 			randomiseLocations(nonFixedLocations, 4),
@@ -35,7 +41,7 @@ class Level {
 		);
 		const tags = getAllTags(all);
 		const allActions = getAllActions(tags, actions);
-		const level = new Level({ map, allLocations, graph, constructions, tags, allActions });
+		const level = new Level({ map, allLocations, graph, constructions, tags, allActions, allItems });
 
 		return level;
 	}
@@ -113,15 +119,92 @@ function generateGraph(winConditions: LocWC[], nonFixed: OneLoc[], initialLoc: L
 		return random;
 	}
 }
-
-function getConstructions(map: GameMap, locations: AllLoc[]): Construction[] {
+//right now getConstruction works only with construction which have only 1 type
+function getConstructions(map: GameMap, locations: AllLoc[], items: AllItems): Construction[] {
 	const locationTitles: (LocationTitle | 'all')[] = locations.map((location) => location.title);
 	locationTitles.push('all');
-	const constructions = constructionsData.filter((item) => {
+	const constructions = constructionsData.filter(funelNeeded).map(getRequirements);
+
+	return constructions;
+
+	// returns the construction, which can be built on one of the locaitons
+	function funelNeeded(item: Construction) {
 		let locations = item.forLocations.map((location) => locationTitles.includes(location));
 		return locations.includes(true) ? true : false;
-	});
-	return constructions;
+	}
+	// returns a construction, with requirements
+	function getRequirements(constr: Construction): Construction {
+		items = utilShuffleArray(items);
+		let requirements: Construction['requirements'];
+		if (constr.type.includes('shelter')) {
+			const shelterReqProps: RequirementsByUse = {
+				use: 'build',
+				commonItems: { unique: 3, amount: 10 },
+				uncommonItems: { unique: 1, amount: 3 }
+			};
+			requirements = requirementsByUse(shelterReqProps);
+		} else if (constr.type.includes('raft')) {
+			const escapeReqProps: RequirementsByUse = {
+				use: 'build',
+				commonItems: { unique: 3, amount: 10 },
+				uncommonItems: { unique: 1, amount: 3 }
+			};
+			requirements = requirementsByUse(escapeReqProps);
+		}
+
+		if (!requirements) throw new Error(`update getRequirements in level, to use ${constr.type[0]}`);
+		constr.requirements = requirements;
+		return constr;
+
+		function requirementsByUse({
+			use,
+			commonItems,
+			uncommonItems
+		}: RequirementsByUse): Construction['requirements'] {
+			const { unique: commonUnique, amount: commonAmount } = commonItems;
+			const { unique: uncommonUnique, amount: uncommonAmount } = uncommonItems;
+			const commonFilterProps: FilterChain = {
+				items,
+				type: 'common',
+				use,
+				uniqueItemAmount: commonUnique,
+				itemAmount: commonAmount
+			};
+			const uncommonFilterProps: FilterChain = {
+				items,
+				type: 'uncommon',
+				use,
+				uniqueItemAmount: uncommonUnique,
+				itemAmount: uncommonAmount
+			};
+			return [...filterChain(commonFilterProps),
+				...filterChain(uncommonFilterProps)]
+		}
+
+		function filterChain({ items, type, use, uniqueItemAmount, itemAmount }: FilterChain) {
+			//filters by the type of the item
+			return (
+				items
+					.filter((item) => item.type === type)
+					//filters by the use of the item
+					.filter((item) => item.uses.includes(use))
+					//gets only the first 3 items of the list, they are always different, since list is shuffled
+					.map((item, index) => (index < uniqueItemAmount ? item : null))
+					//prev .map returned nulls, here nulls are removed
+					.filter((item) => item)
+					//adds the amount to item
+					.map((item) => {
+						if (!item)
+							throw new Error('level => getConstructions => getRequirements => filter chain, is null');
+						return {
+							title: item.title,
+							amount: itemAmount,
+							type: item.type
+						};
+					})
+			);
+		}
+	}
 }
 
 function getAllTags(locations: AllLoc[]): Tag[] {
@@ -145,6 +228,20 @@ function getAllActions(tags: Tag[], actions: (Action | DelayedAction)[]) {
 		});
 		return boolArr.includes(true);
 	}
+}
+
+function getAllItems(locations: AllLoc[]): AllItems {
+	const initialItems = locations
+		.map((location) => {
+			return [ ...location.items.commonItems, ...location.items.uncommonItems ];
+		})
+		.flat();
+	const itemsSet = new Set(initialItems);
+
+	const items: AllItems = [];
+	itemsSet.forEach((item) => items.push(item));
+
+	return items;
 }
 
 export default Level;

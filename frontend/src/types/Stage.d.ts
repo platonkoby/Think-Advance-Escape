@@ -8,7 +8,9 @@ export type StageMethods =
 	| 'advance'
 	| 'moveTime'
 	| 'setWaitingList'
-	| 'resetDailyActions';
+	| 'resetDailyActions'
+	| 'removeLocationText';
+
 
 export type TimeOfDay = 'morning' | 'afternoon' | 'evening' | 'night';
 

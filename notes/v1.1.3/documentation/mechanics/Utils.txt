@@ -1,0 +1,17 @@
+- getGraphNeighbour({ graph, currentPos, direction }: getNeighbour): MapLocations - used to navigate the level
+graph and return the next or previous value
+
+- utilGetItemsString(currentPos: ActionFuncs): string - returns a string which is used to give and collect items
+action's button a title, the string is based on the items which could be found in the location
+
+- utilRandomNumber(to: number, from: number = 0): number - returns a random number between the given to and from
+values
+
+- getUtilRandomNumberProps(type: AllItemTypeNames): [number, number] - gets the type of item as a parameter,
+depending on this type, the function will return an array of numbers, which are supposed to be used as props for
+utilRandomNumber()
+
+-utilDailyMaximum = (n: number): Action['dailyLimit'] - gets a number, which then uses to create an object
+{current: n, initial: n} and return it. This object is used as a prop for action's dailyLimit
+
+-utilShuffleArray = (arr: any[]): any[] - takes in any array, shuffles it and returns

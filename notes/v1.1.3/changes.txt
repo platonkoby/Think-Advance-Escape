@@ -1,0 +1,39 @@
+new:
+
+    - styles added
+
+
+
+updates:
+
+    - MAJOR, Common and Ucommon items:
+        1) uses added
+
+    - MAJOR, Construction:
+        1) requirements added
+
+    - MAJOR, Level
+        1) now has a list of allItems
+        2) getConstructions massively updated
+        3) function getAllItems added
+
+    - minor, Action
+        1) utils is now also responsible for:
+            - increase player hunger
+            - removes the currentLocation text
+
+    - minor, ActionFuncs
+        1) new static method constructionAction
+        2) new static method constructionEffect
+
+    - minor, Player
+        1) updateItem change
+        2) collectItems change
+
+    - minor, Staage
+        1) removeLocationText method added
+
+    -minor, Utils
+        1) utilGetItemsString change
+        2) utilShuffleArray added
+

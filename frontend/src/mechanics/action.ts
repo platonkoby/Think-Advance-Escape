@@ -5,6 +5,7 @@ import Stage from './stage';
 import { ActionTitle, ActionMethods, ActionType } from '../types/Action';
 import { TimeOfDay } from '../types/Stage';
 import { utilDailyMaximum } from './utils';
+import Player from './player';
 
 class Action {
 	title: ActionTitle;
@@ -39,15 +40,27 @@ class Action {
 		this.funcs = actionFuncs;
 	}
 
-	runUtils(stage: Stage) {
-		this.repeats = this.repeats - 1;
+	runUtils(stage: Stage, player: Player) {
+		this.repeats -= 1;
 		if (this.dailyLimit.current > 0) {
 			this.dailyLimit.current -= 1;
 		}
-		stage.moveTime(this);
+		if (!this.type.includes('skip')) {
+			player.increaseHunger(10)
+			stage.moveTime(this);
+
+		}else {
+			this.type = this.type.filter((t) => t !== 'skip')
+		}
 		Stage.updateAllActions(this, stage);
+		stage.removeLocationText()
 		stage.setWaitingList();
 		stage.locationGetAction();
+
+		
+	}
+	saveRepeats() {
+		this.repeats += 1;
 	}
 
 	static generate(props: Props) {
@@ -99,7 +112,7 @@ const buildShelter = Action.generate({
 	description: 'build a shelter, which slighly protects you from threats',
 	forTags: [ 'all' ],
 	forTypes: [ 'large' ],
-	type: [ 'static', 'timing' ],
+	type: [ 'static', 'timing', 'build' ],
 	repeats: 1,
 	forTime: [ 'morning', 'afternoon', 'evening' ],
 	dailyLimit: utilDailyMaximum(Infinity)
@@ -109,7 +122,7 @@ const buildRaft = Action.generate({
 	description: 'build a raft, which is used to escape from an island',
 	forTags: [ 'coastal' ],
 	forTypes: [ 'win condition' ],
-	type: [ 'static', 'timing' ],
+	type: [ 'static', 'timing', 'build' ],
 	repeats: 1,
 	forTime: [ 'morning', 'afternoon', 'evening' ],
 	dailyLimit: utilDailyMaximum(Infinity)
@@ -162,6 +175,17 @@ const waitNightOver = Action.generate({
 	dailyLimit: utilDailyMaximum(Infinity)
 });
 
+const skipTime = Action.generate({
+title: 'skip time',
+description: 'skips one daily stage',
+forTags: [ 'all' ],
+forTypes: [ 'all' ],
+type: [ 'static', 'timing' ],
+repeats: Infinity,
+forTime: [ 'morning', 'evening', 'afternoon' ],
+dailyLimit: utilDailyMaximum(Infinity)
+});
+
 const actionList: Action[] = [
 	goForward,
 	goBackward,
@@ -170,7 +194,8 @@ const actionList: Action[] = [
 	winWithRaft,
 	collectItems,
 	sleep,
-	waitNightOver
+	waitNightOver,
+	skipTime
 ];
 export default actionList;
 export { Action, DelayedAction };
