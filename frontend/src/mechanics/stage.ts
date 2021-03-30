@@ -33,6 +33,7 @@ class Stage {
 				if (action.repeats < 1) return false;
 				const locationTags = location.tags;
 				const actionTags = action.forTags;
+				// comparison of tags in location to forTags in aciton
 				const shareTags = locationTags.map((tag) => actionTags.includes(tag));
 				if (shareTags.includes(true)) return true;
 				return false;
@@ -90,6 +91,13 @@ class Stage {
 
 	setWaitingList() {
 		let { initialActions, waitingActions } = this.allActions;
+		// if (action.forTags.filter((tag) => constructionNames.includes(tag))) {
+		// 	if (!this.constructions) throw new Error('construction action got into pull before the construction was built');
+		// 	const construction = this.constructions.find((constr) => constr.title === 'standard shelter')
+		// 	this.allActions.waitingActions = initialActions;
+		// 	this.allActions.initialActions = construction.actions
+		// 	return
+		// }
 		// turn into set, to remove repetitions
 		const initialActionsSet = new Set([ ...initialActions, ...waitingActions ]);
 		initialActions = [];

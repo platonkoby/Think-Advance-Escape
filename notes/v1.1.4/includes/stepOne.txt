@@ -1,0 +1,22 @@
+Add Actions to constructions
+
+Concept 1:
+    - constructions will have a list of actions
+    - actions inside constrution will be used as a pull of actions
+     when enterin construction
+    - when the checker for enter construction is returned as true,
+    all the current actions are put into the waiting list and
+    the actions inside location become initial actions
+
+
+
+    Destructuring:
+
+    For part 1:
+        -create a list of actions in constructions
+        
+    For part 2 and 3:
+        - adapt the method by which initial actions are chosen, so that,
+        everything could go into a waiting list when needed and be chosen
+        from another pull
+

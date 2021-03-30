@@ -1,5 +1,6 @@
 import LocationsCollection from './location';
-import { LocInit, LocWC, OneLoc, AllLoc, LocationTitle, LocationCollectionProps, Tag } from '../types/LocationTypes';
+import { LocInit, LocWC, OneLoc, AllLoc, LocationTitle, LocationCollectionProps } from '../types/LocationTypes';
+import { Tag, LocationTag } from '../types/Tags-Types'
 import constructionsData, { Construction } from '../data/constructions';
 import { MapLocations, GameMap } from '../types/Maps';
 import actionList, { Action, DelayedAction } from './action';
@@ -15,7 +16,7 @@ class Level {
 	allItems: AllItems;
 	graph: Map<number, MapLocations>;
 	constructions: Construction[];
-	tags: Tag[];
+	tags: LocationTag[];
 
 	constructor(props: Props) {
 		const { map, graph, constructions, allLocations, tags, allActions, allItems } = props;
@@ -215,7 +216,7 @@ function getAllTags(locations: AllLoc[]): Tag[] {
 	tagsSet.forEach((tag) => tags.push(tag as Tag));
 	return tags;
 }
-function getAllActions(tags: Tag[], actions: (Action | DelayedAction)[]) {
+function getAllActions(tags: LocationTag[], actions: (Action | DelayedAction)[]) {
 	actions = actions.filter(filterFunc);
 	const delayedActions = actions.filter((action) => action.delayed) as DelayedAction[];
 	const initialActions = actions.filter((action) => !action.delayed) as Action[];

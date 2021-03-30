@@ -1,12 +1,10 @@
 import Stage from './stage';
 import { getGraphNeighbour, utilGetItemsString, utilItemComparison } from './utils';
 import { FuncProps, ActionTitle, ActionFuncsMethods } from '../types/ActionFuncs';
-import constructions, { Construction } from '../data/constructions';
 import { DelayedAction, Action } from './action';
 import { PlayerItems } from '../types/Player';
+import constructions, { Construction } from '../data/constructions';
 
-
-const [ shelter, raft ] = constructions;
 
 const INITIAL_PROPS: FuncProps = {
 	player: undefined,
@@ -129,6 +127,7 @@ const buildShelterFuncs = ActionFuncs.generate({
 	forAction: 'build a shelter',
 	props: INITIAL_PROPS,
 	action: () => {
+		const [shelter] = constructions;
 		const {stage, props} = ActionFuncs.constructionAction(buildShelterFuncs.props, 'standard shelter', shelter);
 		buildShelterFuncs.props = props;
 		return stage;
@@ -144,6 +143,7 @@ const buildRaftFuncs = ActionFuncs.generate({
 	forAction: 'build raft',
 	props: INITIAL_PROPS,
 	action: () => {
+		const [raft] = constructions;
 		const {stage, props} = ActionFuncs.constructionAction(buildRaftFuncs.props, 'raft', raft);
 		buildRaftFuncs.props = props;
 		return stage;
@@ -162,6 +162,7 @@ const winWithRaftFuncs = ActionFuncs.generate({
 	forAction: 'win with a raft',
 	props: INITIAL_PROPS,
 	action: () => {
+		
 		const { level, currentPos, stage, action } = winWithRaftFuncs.props;
 		if (!level || !currentPos || !stage || !action) throw new Error();
 		return stage.move({});

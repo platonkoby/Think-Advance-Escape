@@ -4,11 +4,11 @@ import {
 	LocLarge,
 	LocSmall,
 	LocMedium,
-	LocationType,
 	AllLocations,
 	AllLoc,
 	LocationCollectionProps
 } from '../types/LocationTypes';
+import { LocationType } from '../types/Tags-Types';
 import commonItems from '../data/commonItems';
 import uncommonItems from '../data/uncommonItems';
 import { GameMap } from '../types/Maps';

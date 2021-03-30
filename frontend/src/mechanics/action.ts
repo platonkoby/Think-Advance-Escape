@@ -1,4 +1,4 @@
-import { LocationType, Tag } from '../types/LocationTypes';
+import { Tag, AllTypes } from '../types/Tags-Types';
 import { shelterIsBuilt, winWithRaftChecker } from './actionCheckers';
 import funcs, { ActionFuncs as Func } from './actionFuncs';
 import Stage from './stage';
@@ -7,12 +7,13 @@ import { TimeOfDay } from '../types/Stage';
 import { utilDailyMaximum } from './utils';
 import Player from './player';
 
+
 class Action {
 	title: ActionTitle;
 	description: string;
 	funcs?: Func;
 	forTags: Tag[];
-	forTypes: LocationType[];
+	forTypes: AllTypes[];
 	forTime: (TimeOfDay | 'all')[];
 	type: ActionType[];
 	repeats: number;
@@ -156,7 +157,7 @@ const sleep = DelayedAction.generate({
 	title: 'sleep',
 	description: 'skip every time of the dey to get to morning',
 	forTags: [ 'all' ],
-	forTypes: [ 'large' ],
+	forTypes: [ 'shelter' ],
 	type: [ 'static' ],
 	repeats: Infinity,
 	waitFor: [ 'build a shelter' ],
@@ -186,7 +187,7 @@ forTime: [ 'morning', 'evening', 'afternoon' ],
 dailyLimit: utilDailyMaximum(Infinity)
 });
 
-const actionList: Action[] = [
+const actionList: (Action | DelayedAction)[] = [
 	goForward,
 	goBackward,
 	buildShelter,

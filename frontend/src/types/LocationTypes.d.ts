@@ -4,20 +4,10 @@ import { Action } from '../mechanics/action';
 import LocationsCollection from '../mechanics/location';
 import { Items } from './Items';
 import { GameMap } from './Maps';
+import { LocationType, LocationTag } from './Tags-Types';
+
 
 export type LocationTitle = 'beach' | 'cave' | 'rocky hills' | 'jungle' | 'white sands' | 'test';
-export type Tag =
-	| 'explore'
-	| 'rough terrain'
-	| 'enclosed'
-	| 'dark'
-	| 'high'
-	| 'high vegetation'
-	| 'humid'
-	| 'coastal'
-	| 'all';
-
-export type LocationType = 'large' | 'medium' | 'small' | 'win condition' | 'initial location' | 'all';
 
 export type OneLoc = LocWC | LocSmall | LocLarge | LocMedium;
 
@@ -38,7 +28,7 @@ interface Loc {
 	title: LocationTitle;
 	type: LocationType | [LocationType, LocationType];
 	description: string;
-	tags: Tag[];
+	tags: LocationTag[];
 	fixed: boolean;
 	initial?: boolean;
 	text?: string;
