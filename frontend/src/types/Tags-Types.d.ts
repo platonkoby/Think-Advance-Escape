@@ -12,6 +12,6 @@ export type LocationTag =
 | 'coastal'
 | 'all';
 
-export type LocationType = 'large' | 'medium' | 'small' | 'win condition' | 'initial location' | 'all';
-export type ConstructionType = 'shelter' | 'raft';
+export type LocationType = 'large' | 'medium' | 'small' | 'win condition' | 'initial location'| 'has construction' | 'all';
+export type ConstructionType = 'shelter' | 'raft' | 'construction';
 export type AllTypes = LocationType | ConstructionType;

@@ -187,6 +187,30 @@ forTime: [ 'morning', 'evening', 'afternoon' ],
 dailyLimit: utilDailyMaximum(Infinity)
 });
 
+const enterShelter = DelayedAction.generate({
+title: 'enter shelter',
+description: 'enter built shelter and change action layer',
+forTags: [ 'all' ],
+forTypes: [ 'all' ],
+type: [ 'static' ],
+repeats: Infinity,
+forTime: [ 'all' ],
+dailyLimit: utilDailyMaximum(Infinity),
+waitFor: ['build a shelter'],
+checker: shelterIsBuilt,
+});
+
+const exitConstruction = Action.generate({
+title: 'exit construction',
+description: 'exits any construction',
+forTags: [ 'all' ],
+forTypes: [ 'construction' ],
+type: [ 'static' ],
+repeats: Infinity,
+forTime: [ 'all' ],
+dailyLimit: utilDailyMaximum(Infinity)
+});
+
 const actionList: (Action | DelayedAction)[] = [
 	goForward,
 	goBackward,
@@ -196,7 +220,9 @@ const actionList: (Action | DelayedAction)[] = [
 	collectItems,
 	sleep,
 	waitNightOver,
-	skipTime
+	skipTime,
+	enterShelter,
+	exitConstruction
 ];
 export default actionList;
 export { Action, DelayedAction };

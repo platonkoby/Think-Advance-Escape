@@ -1,0 +1,23 @@
+when a construction is built, its name is added to the actionLayerList
+
+Stage will have actionLayers object with actionLayerList and 
+currentActionLayer, which will be used to set current action layer
+
+game.tsx is going to use currentActionLayer to show the actions
+
+    game.tsx uses locations to show the actions, meaning that the change
+    of location can only occure in the main layer
+
+    some actions will change current action layer
+
+    when current action layer is set, it will cause a checker which will
+    try to find a construction with that name
+
+
+Done: 
+
+    + add actionLayers to Stage
+    + add layer when new construction is built
+    + create actions enterShelter
+    + make a switch between actions depending on the currentActionLayer
+    - make universal enterConstruction action

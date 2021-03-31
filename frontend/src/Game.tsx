@@ -45,7 +45,8 @@ function Game({ loading, level, startGame, player }: Props) {
 								currentLocation: pos,
 								allActions: { ...allActions, waitingActions: [] },
 								allLocations: allLocations.all,
-								timeOfTheDay: 'morning'
+								timeOfTheDay: 'morning',
+								actionLayers: {actionLayerList: ['main'], currentLayer: 'main'}
 							})
 						);
 					}
@@ -55,7 +56,16 @@ function Game({ loading, level, startGame, player }: Props) {
 		[ level, loading ]
 	);
 	if (level && currentStage) {
-		const {title, text, actions} = currentStage.currentLocation.location;
+		const layer = currentStage.actionLayers.currentLayer;
+		let {title, text, actions} = currentStage.currentLocation.location;
+
+		if (layer !== 'main') {
+			const actionList = currentStage.constructions?.find((constr) => constr.title === layer)?.actions;
+			if (!actionList) throw new Error('there is a proble with action layer, there is no such layer/construction');
+			actions = actionList;
+		}
+
+
 		return (
 			<div className='container'>
 				<div className='header'>

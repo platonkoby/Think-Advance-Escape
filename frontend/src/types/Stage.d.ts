@@ -1,4 +1,5 @@
 import { Action, DelayedAction } from '../mechanics/action';
+import { ConstructionTitle } from './Constructions';
 
 export type StageMethods =
 	| 'move'
@@ -9,7 +10,8 @@ export type StageMethods =
 	| 'moveTime'
 	| 'setWaitingList'
 	| 'resetDailyActions'
-	| 'removeLocationText';
+	| 'removeLocationText'
+	| 'addActionLayer';
 
 
 export type TimeOfDay = 'morning' | 'afternoon' | 'evening' | 'night';
@@ -19,3 +21,10 @@ export interface StageActions {
 	delayedActions: DelayedAction[];
 	waitingActions: (Action | DelayedAction)[];
 }
+
+export interface StageActionLayers {
+	actionLayerList: ActionLayer[];
+	currentLayer: 'main' | ConstructionTitle;
+}
+
+export type ActionLayer = ('main' | ConstructionTitle);

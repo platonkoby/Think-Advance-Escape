@@ -11,4 +11,6 @@ export type ActionTitle =
 	| 'go backward'
 	| 'sleep'
 	| 'wait night over'
-	| 'skip time';
+	| 'skip time'
+	| 'enter shelter'
+	| 'exit construction';

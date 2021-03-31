@@ -24,12 +24,12 @@
 				"forAction: ${2:},",
 				"props: INITIAL_PROPS,",
 				"action: () => {",
-					"const { level, currentPos, stage, action, player } = ${1:}Funcs.props;",
-					"if (!level || !currentPos || !stage || !action || !player) throw new Error();",
-					"return stage.move({});",
+				"	const { level, currentPos, stage, action, player } = ${1:}Funcs.props;",
+				"	if (!level || !currentPos || !stage || !action || !player) throw new Error();",
+				"	return stage.move({});",
 				"},",
 				"title: () => {",
-					"return { btn: '', effect: '' };",
+				"	return { btn: '', effect: '' };",
 				"}",
 			"})"
 		]

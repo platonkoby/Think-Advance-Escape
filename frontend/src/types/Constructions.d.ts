@@ -7,3 +7,4 @@ export type ConstructionMethods = 'getMaterials';
 
 export type ConstructionReqs = PlayerItems[]
 
+export type ConstructionTitle = 'raft' | 'standard shelter';

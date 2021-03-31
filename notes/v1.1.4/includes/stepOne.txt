@@ -3,20 +3,25 @@ Add Actions to constructions
 Concept 1:
     - constructions will have a list of actions
     - actions inside constrution will be used as a pull of actions
-     when enterin construction
+     when entering construction
     - when the checker for enter construction is returned as true,
     all the current actions are put into the waiting list and
     the actions inside location become initial actions
 
+Concept 2 (final): 
+    - constructions will have a list of actions
+    - actions inside constrution will be used as a pull of actions
+     when entering construction
+    - when a apecific action is ran, eg. enterShelter. It switches
+    action layer to switch between pull of actions
 
 
     Destructuring:
 
     For part 1:
-        -create a list of actions in constructions
+        - create a list of actions in constructions
         
     For part 2 and 3:
-        - adapt the method by which initial actions are chosen, so that,
-        everything could go into a waiting list when needed and be chosen
-        from another pull
+        - create actionLayers in stage and add a methdos to switch
+        between them in Game.tsx
 

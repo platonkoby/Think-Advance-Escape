@@ -9,7 +9,7 @@ export const winWithRaftChecker = (stage: Stage) => {
 };
 
 export const shelterIsBuilt = (stage: Stage) => {
-	if (stage.constructions && stage.constructions.find((construction) => construction.title === 'standart shelter')) {
+	if (stage.constructions && stage.constructions.find((construction) => construction.title === 'standard shelter')) {
 		return true;
 	}
 	return false;

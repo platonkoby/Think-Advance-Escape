@@ -4,6 +4,7 @@ import { FuncProps, ActionTitle, ActionFuncsMethods } from '../types/ActionFuncs
 import { DelayedAction, Action } from './action';
 import { PlayerItems } from '../types/Player';
 import constructions, { Construction } from '../data/constructions';
+import { ConstructionTitle } from '../types/Constructions';
 
 
 const INITIAL_PROPS: FuncProps = {
@@ -26,7 +27,7 @@ export class ActionFuncs {
 		this.forAction = forAction;
 	}
 
-	static constructionAction (props: FuncProps, constructionName: Construction['title'], construction: Construction) {
+	static constructionAction (props: FuncProps, constructionName: ConstructionTitle, construction: Construction) {
 		const { level, currentPos, stage, action, player } = props;
 		if (!stage || !currentPos || !level || !action || !player) throw new Error();
 
@@ -52,6 +53,7 @@ export class ActionFuncs {
 				return {stage: stage.move({}), props};
 			}
 		}
+		stage.addActionLayer(construction.title);
 		if (!stage.constructions) {
 			return {stage: stage.move({ constructions: [ construction ] }), props};
 		}
@@ -228,7 +230,32 @@ const skipTimeFuncs = ActionFuncs.generate({
 	}
 })
 
+const enterShelterFuncs = ActionFuncs.generate({
+forAction: 'enter shelter',
+props: INITIAL_PROPS,
+action: () => {
+	const { level, currentPos, stage, action, player } = enterShelterFuncs.props;
+	if (!level || !currentPos || !stage || !action || !player) throw new Error();
 
+	return stage.move({actionLayers: {actionLayerList: stage.actionLayers.actionLayerList, currentLayer: 'standard shelter'}});
+},
+title: () => {
+	return { btn: 'Enter Shelter', effect: 'Inside the shelter' };
+}
+})
+
+const exitConstructionFuncs = ActionFuncs.generate({
+forAction: 'exit construction',
+props: INITIAL_PROPS,
+action: () => {
+	const { level, currentPos, stage, action, player } = exitConstructionFuncs.props;
+	if (!level || !currentPos || !stage || !action || !player) throw new Error();
+return stage.move({actionLayers: {actionLayerList: stage.actionLayers.actionLayerList, currentLayer: 'main'}});
+},
+title: () => {
+return { btn: 'Exit', effect: '' };
+}
+})
 
 const actionFuncs = [
 	goForwardFuncs,
@@ -239,7 +266,9 @@ const actionFuncs = [
 	collectItemsFuncs,
 	sleepFuncs,
 	waitNightOverFuncs,
-	skipTimeFuncs
+	skipTimeFuncs,
+	enterShelterFuncs,
+	exitConstructionFuncs
 ];
 
 export default actionFuncs;

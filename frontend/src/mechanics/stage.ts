@@ -1,9 +1,10 @@
 import { MapLocations } from '../types/Maps';
 import { LocationCollectionProps } from '../types/LocationTypes';
 import { Action, DelayedAction } from './action';
-import { StageActions, StageMethods, TimeOfDay } from '../types/Stage';
+import { ActionLayer, StageActionLayers, StageActions, StageMethods, TimeOfDay } from '../types/Stage';
 import { Optional } from '../types/Utils';
 import { Construction } from '../data/constructions';
+
 
 class Stage {
 	currentLocation: MapLocations;
@@ -12,14 +13,16 @@ class Stage {
 	dependencyMap?: Map<Action['title'], DelayedAction[]>;
 	constructions?: Construction[];
 	timeOfTheDay: TimeOfDay;
+	actionLayers: StageActionLayers;
 
-	constructor({ currentLocation, allActions, allLocations, dependencyMap, constructions, timeOfTheDay }: Props) {
+	constructor({ currentLocation, allActions, allLocations, dependencyMap, constructions, timeOfTheDay, actionLayers }: Props) {
 		this.currentLocation = currentLocation;
 		this.allLocations = allLocations;
 		this.allActions = allActions;
 		this.dependencyMap = dependencyMap;
 		this.constructions = constructions;
 		this.timeOfTheDay = timeOfTheDay;
+		this.actionLayers = actionLayers;
 	}
 
 	move(props: Optional<Props>): Stage {
@@ -147,6 +150,12 @@ class Stage {
 		}
 	}
 
+	addActionLayer(layer: ActionLayer) {
+		const layers = this.actionLayers.actionLayerList;
+		if (!layers.some(item => item === layer)) {
+			this.actionLayers.actionLayerList.push(layer);
+		}
+	}
 
 
 	static updateAllActions(action: Action | DelayedAction, stage: Stage) {
